@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BaseConverterClass</class>
+ <widget class="QWidget" name="BaseConverterClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>106</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>BaseConverter</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QComboBox" name="InputBaseSelector"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="InputField">
+         <property name="placeholderText">
+          <string>Input</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QComboBox" name="OutputBaseSelector"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="OutputField">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Output</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="HROutputField">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>HRESULT Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>InputField</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>BaseConverterClass</receiver>
+   <slot>InputTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>153</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>InputBaseSelector</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>BaseConverterClass</receiver>
+   <slot>InputBaseChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>153</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>OutputBaseSelector</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>BaseConverterClass</receiver>
+   <slot>OutputBaseChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>InputBaseChanged(int)</slot>
+  <slot>OutputBaseChanged(int)</slot>
+  <slot>InputTextChanged(QString)</slot>
+ </slots>
+</ui>
