@@ -58,6 +58,7 @@
      <string>General</string>
     </property>
     <addaction name="ActionBaseConverter"/>
+    <addaction name="ActionCalculator"/>
    </widget>
    <addaction name="MenuFile"/>
    <addaction name="MenuGeneral"/>
@@ -74,6 +75,11 @@
   <action name="ActionBaseConverter">
    <property name="text">
     <string>Base converter</string>
+   </property>
+  </action>
+  <action name="ActionCalculator">
+   <property name="text">
+    <string>Calculator</string>
    </property>
   </action>
  </widget>
@@ -96,8 +102,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionCalculator</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OpenCalculator()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
+  <slot>OpenCalculator()</slot>
  </slots>
 </ui>

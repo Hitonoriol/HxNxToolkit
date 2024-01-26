@@ -18,6 +18,7 @@ public:
 
 public slots:
 	void OpenBaseConverter();
+	void OpenCalculator();
 
 private:
 	Ui::HxNxToolkitClass ui;

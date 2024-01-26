@@ -1,6 +1,7 @@
 #include "HxNxToolkit.h"
 
 #include "General/BaseConverter.h"
+#include "General/Calculator.h"
 
 #include <QDateTime>
 
@@ -31,4 +32,10 @@ void HxNxToolkit::OpenBaseConverter()
 {
 	auto converter = new BaseConverter;
 	GetCurrentTab()->AddWidget(converter, "Base converter");
+}
+
+void HxNxToolkit::OpenCalculator()
+{
+	auto calculator = new Calculator;
+	GetCurrentTab()->AddWidget(calculator, "Calculator");
 }

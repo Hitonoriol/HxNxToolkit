@@ -35,6 +35,9 @@
     <ClCompile Include="UI\Tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="General\Calculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -46,6 +49,9 @@
     <QtMoc Include="UI\Tab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="General\Calculator.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -55,6 +61,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="UI\Tab.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="General\Calculator.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

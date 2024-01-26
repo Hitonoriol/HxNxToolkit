@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\BaseConverter.cpp" />
+    <ClCompile Include="General\Calculator.cpp" />
     <ClCompile Include="HxNxToolkit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UI\Tab.cpp" />
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="General\BaseConverter.ui" />
+    <QtUic Include="General\Calculator.ui" />
     <QtUic Include="HxNxToolkit.ui" />
     <QtUic Include="UI\Tab.ui" />
   </ItemGroup>
@@ -35,6 +37,14 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="UI\Tab.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="3rdParty\tinyexpr\tinyexpr.vcxproj">
+      <Project>{5cfe6bbf-9c74-40b0-b065-1faf1d9ed7ba}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="General\Calculator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0938D542-A05A-4FB9-B039-F70D06518687}</ProjectGuid>
@@ -84,6 +94,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
