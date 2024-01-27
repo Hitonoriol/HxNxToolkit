@@ -21,6 +21,8 @@
     <ClCompile Include="General\Calculator.cpp" />
     <ClCompile Include="HxNxToolkit.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Productivity\Checklist\Checklist.cpp" />
+    <ClCompile Include="Productivity\Checklist\ChecklistEntry.cpp" />
     <ClCompile Include="UI\Tab.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +32,8 @@
     <QtUic Include="General\BaseConverter.ui" />
     <QtUic Include="General\Calculator.ui" />
     <QtUic Include="HxNxToolkit.ui" />
+    <QtUic Include="Productivity\Checklist\Checklist.ui" />
+    <QtUic Include="Productivity\Checklist\ChecklistEntry.ui" />
     <QtUic Include="UI\Tab.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="General\Calculator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Productivity\Checklist\Checklist.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Productivity\Checklist\ChecklistEntry.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0938D542-A05A-4FB9-B039-F70D06518687}</ProjectGuid>

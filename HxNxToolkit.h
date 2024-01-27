@@ -16,9 +16,24 @@ public:
 	Tab* NewTab();
 	Tab* GetCurrentTab();
 
+	enum class Tool
+	{
+		// General
+		BaseConverter,
+		Calculator,
+
+		// Productivity
+		Checklist
+	};
+	Q_ENUM(Tool)
+
 public slots:
+	void NewTabTriggered();
+
 	void OpenBaseConverter();
 	void OpenCalculator();
+
+	void OpenChecklist();
 
 private:
 	Ui::HxNxToolkitClass ui;

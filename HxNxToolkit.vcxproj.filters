@@ -38,6 +38,12 @@
     <ClCompile Include="General\Calculator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Productivity\Checklist\Checklist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Productivity\Checklist\ChecklistEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -52,6 +58,12 @@
     <QtMoc Include="General\Calculator.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Productivity\Checklist\Checklist.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Productivity\Checklist\ChecklistEntry.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -64,6 +76,12 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="General\Calculator.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Productivity\Checklist\Checklist.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Productivity\Checklist\ChecklistEntry.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

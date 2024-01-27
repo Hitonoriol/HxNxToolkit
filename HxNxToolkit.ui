@@ -35,6 +35,18 @@
       <property name="currentIndex">
        <number>-1</number>
       </property>
+      <property name="elideMode">
+       <enum>Qt::ElideLeft</enum>
+      </property>
+      <property name="documentMode">
+       <bool>true</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
@@ -60,8 +72,15 @@
     <addaction name="ActionBaseConverter"/>
     <addaction name="ActionCalculator"/>
    </widget>
+   <widget class="QMenu" name="menuProductivity">
+    <property name="title">
+     <string>Productivity</string>
+    </property>
+    <addaction name="ActionChecklist"/>
+   </widget>
    <addaction name="MenuFile"/>
    <addaction name="MenuGeneral"/>
+   <addaction name="menuProductivity"/>
   </widget>
   <widget class="QToolBar" name="MainToolBar">
    <attribute name="toolBarArea">
@@ -80,6 +99,16 @@
   <action name="ActionCalculator">
    <property name="text">
     <string>Calculator</string>
+   </property>
+  </action>
+  <action name="ActionNewTab">
+   <property name="text">
+    <string>New tab</string>
+   </property>
+  </action>
+  <action name="ActionChecklist">
+   <property name="text">
+    <string>Checklist</string>
    </property>
   </action>
  </widget>
@@ -118,9 +147,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionNewTab</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>NewTabTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionChecklist</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OpenChecklist()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
   <slot>OpenCalculator()</slot>
+  <slot>NewTabTriggered()</slot>
+  <slot>OpenChecklist()</slot>
  </slots>
 </ui>
