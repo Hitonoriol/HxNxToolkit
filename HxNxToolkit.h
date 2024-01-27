@@ -23,7 +23,10 @@ public:
 		Calculator,
 
 		// Productivity
-		Checklist
+		Checklist,
+
+		// Time
+		Stopwatch
 	};
 	Q_ENUM(Tool)
 
@@ -34,6 +37,8 @@ public slots:
 	void OpenCalculator();
 
 	void OpenChecklist();
+
+	void OpenStopwatch();
 
 private:
 	Ui::HxNxToolkitClass ui;

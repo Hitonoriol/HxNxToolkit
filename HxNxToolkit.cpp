@@ -5,6 +5,8 @@
 
 #include "Productivity/Checklist/Checklist.h"
 
+#include "Time/Stopwatch.h"
+
 #include <QDateTime>
 
 HxNxToolkit::HxNxToolkit(QWidget *parent)
@@ -52,4 +54,10 @@ void HxNxToolkit::OpenChecklist()
 {
 	auto checklist = new Checklist;
 	GetCurrentTab()->AddWidget(checklist, "Checklist");
+}
+
+void HxNxToolkit::OpenStopwatch()
+{
+	auto stopwatch = new Stopwatch;
+	GetCurrentTab()->AddWidget(stopwatch, "Stopwatch");
 }

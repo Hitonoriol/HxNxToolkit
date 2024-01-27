@@ -64,6 +64,7 @@
     <property name="title">
      <string>File</string>
     </property>
+   <addaction name="ActionNewTab"/>
    </widget>
    <widget class="QMenu" name="MenuGeneral">
     <property name="title">
@@ -72,15 +73,22 @@
     <addaction name="ActionBaseConverter"/>
     <addaction name="ActionCalculator"/>
    </widget>
-   <widget class="QMenu" name="menuProductivity">
+   <widget class="QMenu" name="MenuProductivity">
     <property name="title">
      <string>Productivity</string>
     </property>
     <addaction name="ActionChecklist"/>
    </widget>
+   <widget class="QMenu" name="MenuTime">
+    <property name="title">
+     <string>Time</string>
+    </property>
+    <addaction name="ActionStopwatch"/>
+   </widget>
    <addaction name="MenuFile"/>
    <addaction name="MenuGeneral"/>
-   <addaction name="menuProductivity"/>
+   <addaction name="MenuProductivity"/>
+   <addaction name="MenuTime"/>
   </widget>
   <widget class="QToolBar" name="MainToolBar">
    <attribute name="toolBarArea">
@@ -109,6 +117,16 @@
   <action name="ActionChecklist">
    <property name="text">
     <string>Checklist</string>
+   </property>
+  </action>
+  <action name="ActionStopwatch">
+   <property name="text">
+    <string>Stopwatch</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>New tab</string>
    </property>
   </action>
  </widget>
@@ -179,11 +197,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionStopwatch</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OpenStopwatch()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
   <slot>OpenCalculator()</slot>
   <slot>NewTabTriggered()</slot>
   <slot>OpenChecklist()</slot>
+  <slot>OpenStopwatch()</slot>
  </slots>
 </ui>
