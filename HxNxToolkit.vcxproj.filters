@@ -50,6 +50,9 @@
     <ClCompile Include="Productivity\Checklist\ChecklistEntry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Util\Time.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -102,5 +105,10 @@
     <QtUic Include="Productivity\Checklist\ChecklistEntry.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Util\Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Productivity\Checklist\Checklist.cpp" />
     <ClCompile Include="Productivity\Checklist\ChecklistEntry.cpp" />
+    <ClCompile Include="Util\Time.cpp" />
     <ClCompile Include="Time\Stopwatch.cpp" />
     <ClCompile Include="Time\Timer.cpp" />
     <ClCompile Include="UI\Tab.cpp" />
@@ -65,6 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Productivity\Checklist\ChecklistEntry.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Util\Time.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0938D542-A05A-4FB9-B039-F70D06518687}</ProjectGuid>
@@ -116,12 +120,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">

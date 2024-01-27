@@ -4,7 +4,6 @@
 #include "ui_Stopwatch.h"
 
 #include <QTimer>
-#include <QElapsedTimer>
 
 class Stopwatch : public QWidget
 {
@@ -14,8 +13,6 @@ public:
 	Stopwatch(QWidget *parent = nullptr);
 	~Stopwatch();
 
-	QString GetTimeString(int64_t timeMs);
-
 private slots:
 	void OnStartPausePress();
 	void OnStopPress();
@@ -24,11 +21,13 @@ private slots:
 	void UpdateTimerTick();
 
 private:
+	int64_t Elapsed();
+
 	Ui::StopwatchClass ui;
 
 	QTimer updateTimer;
-	QElapsedTimer timer;
+	int64_t startTime{};
 
-	int64_t elapsed{};
+	int64_t savedTime{};
 	int64_t lastPoint{};
 };

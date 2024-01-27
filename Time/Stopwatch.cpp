@@ -1,5 +1,7 @@
 #include "Stopwatch.h"
 
+#include "Util/Time.h"
+
 #include <QDateTime>
 #include <QTimeZone>
 
@@ -16,13 +18,13 @@ Stopwatch::~Stopwatch()
 void Stopwatch::OnStartPausePress()
 {
 	if (!updateTimer.isActive()) {
-		timer.restart();
+		startTime = Time::Now();
 		updateTimer.start(std::chrono::milliseconds{100});
 		ui.StartPauseButton->setText("Pause");
 		ui.TimePointButton->setEnabled(true);
 	} else {
 		updateTimer.stop();
-		elapsed += timer.elapsed();
+		savedTime += Elapsed();
 		ui.StartPauseButton->setText("Resume");
 		ui.TimePointButton->setEnabled(false);
 	}
@@ -35,20 +37,20 @@ void Stopwatch::OnStopPress()
 	}
 	ui.StartPauseButton->setText("Start");
 
-	elapsed = 0;
-	ui.TimeLabel->setText(GetTimeString(0));
+	savedTime = 0;
+	ui.TimeLabel->setText(Time::GetTimeString(0));
 	ui.TimeTable->setRowCount(0);
 	ui.TimePointButton->setEnabled(false);
 }
 
 void Stopwatch::OnTimePointPress()
 {
-	auto now = elapsed + timer.elapsed();
+	auto now = savedTime + Elapsed();
 	auto diff = now - lastPoint;
 	lastPoint = now;
 
-	auto timeStr = GetTimeString(now);
-	auto diffStr = GetTimeString(diff);
+	auto timeStr = Time::GetTimeString(now);
+	auto diffStr = Time::GetTimeString(diff);
 
 	auto newIdx = ui.TimeTable->rowCount();
 	ui.TimeTable->insertRow(newIdx);
@@ -59,27 +61,11 @@ void Stopwatch::OnTimePointPress()
 
 void Stopwatch::UpdateTimerTick()
 {
-	auto timeStr = GetTimeString(elapsed + timer.elapsed());
+	auto timeStr = Time::GetTimeString(savedTime + Elapsed());
 	ui.TimeLabel->setText(timeStr);
 }
 
-QString Stopwatch::GetTimeString(int64_t timeMs)
+int64_t Stopwatch::Elapsed()
 {
-	timeMs = qMax(0, timeMs);
-	auto ms = timeMs % 1000;
-	timeMs /= 1000;
-	auto s = timeMs % 60;
-	auto m = (timeMs % 3600) / 60;
-	auto h = (timeMs % 86400) / 3600;
-
-	auto pad = [](const QString& t) { return t.size() < 2 ? ("0" + t) : t; };
-	auto padMs = [](const QString& t) { return t.size() < 3 ? (t + QString("0").repeated(3 - t.size())) : t; };
-
-	QString timeStr =
-		pad(QString::number(h)) + ":"
-		+ pad(QString::number(m)) + ":"
-		+ pad(QString::number(s)) + "."
-		+ padMs(QString::number(ms));
-
-	return timeStr;
+	return Time::Now() - startTime;
 }
