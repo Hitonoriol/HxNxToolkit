@@ -2,6 +2,7 @@
 
 #include <QGroupBox>
 #include <QVBoxLayout>
+#include <QSpacerItem>
 
 Tab::Tab(QWidget* parent)
 	: QWidget(parent)
@@ -19,5 +20,7 @@ void Tab::AddWidget(QWidget* parent, const QString& title)
 	auto layout = new QVBoxLayout;
 	layout->addWidget(parent);
 	group->setLayout(layout);
+	scrollLayout->removeItem(ui.BottomSpacer);
 	scrollLayout->addWidget(group);
+	scrollLayout->addItem(ui.BottomSpacer);
 }
