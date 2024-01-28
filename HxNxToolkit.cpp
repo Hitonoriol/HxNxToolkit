@@ -6,8 +6,10 @@
 #include "Productivity/Checklist/Checklist.h"
 
 #include "Time/Stopwatch.h"
+#include "Time/Timer.h"
 
 #include <QDateTime>
+#include <QMessageBox>
 
 HxNxToolkit::HxNxToolkit(QWidget *parent)
 	: QMainWindow(parent)
@@ -22,7 +24,7 @@ HxNxToolkit::~HxNxToolkit()
 Tab* HxNxToolkit::NewTab()
 {
 	auto tab = new Tab;
-	auto title = QDateTime::currentDateTime().toString();
+	auto title = Time::GetTimeString(QDateTime::currentDateTime());
 	curTabIdx = ui.Tabs->addTab(tab, title);
 	ui.Tabs->setCurrentWidget(tab);
 	return tab;
@@ -60,4 +62,23 @@ void HxNxToolkit::OpenStopwatch()
 {
 	auto stopwatch = new Stopwatch;
 	GetCurrentTab()->AddWidget(stopwatch, "Stopwatch");
+}
+
+void HxNxToolkit::OpenTimer()
+{
+	auto timer = new Timer;
+	connect(timer, &Timer::TimerCompleted, this, [this](int64_t startTime, Time duration) {
+		setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+		activateWindow();
+
+		auto durationStr = Time::GetTimeString(duration.GetTimeMs());
+		auto startTimeStr = Time::GetTimeString(QDateTime::fromMSecsSinceEpoch(startTime));
+		auto notification = new QMessageBox(this);
+		notification->setWindowTitle("Timer");
+		notification->setText("Timer has completed!");
+		notification->setInformativeText(QString("Duration: %1\nStarted at: %2").arg(durationStr).arg(startTimeStr));
+		notification->show();
+	});
+
+	GetCurrentTab()->AddWidget(timer, "Timer");
 }

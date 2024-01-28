@@ -1,5 +1,18 @@
 #include "Time.h"
 
+Time::Time(int64_t time)
+	: time(time)
+{
+}
+
+void Time::SetTime(int hours, int minutes, int seconds, int millis)
+{
+	time = millis;
+	time += seconds * 1000;
+	time += minutes * 60 * 1000;
+	time += hours * 3600 * 1000;
+}
+
 QString Time::GetTimeString(int64_t timeMs, bool withMillis)
 {
 	timeMs = qMax(0, timeMs);
@@ -21,6 +34,11 @@ QString Time::GetTimeString(int64_t timeMs, bool withMillis)
 	}
 
 	return timeStr;
+}
+
+QString Time::GetTimeString(const QDateTime& dateTime)
+{
+	return dateTime.toString("ddd, d MMMM, yyyy, hh:mm:ss");
 }
 
 int64_t Time::Now()

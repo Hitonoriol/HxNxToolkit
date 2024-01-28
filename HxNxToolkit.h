@@ -26,19 +26,24 @@ public:
 		Checklist,
 
 		// Time
-		Stopwatch
+		Stopwatch,
+		Timer
 	};
 	Q_ENUM(Tool)
 
 public slots:
 	void NewTabTriggered();
 
+	// General
 	void OpenBaseConverter();
 	void OpenCalculator();
 
+	// Productivity
 	void OpenChecklist();
 
+	// Time
 	void OpenStopwatch();
+	void OpenTimer();
 
 private:
 	Ui::HxNxToolkitClass ui;
