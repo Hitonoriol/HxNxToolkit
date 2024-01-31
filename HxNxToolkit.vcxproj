@@ -17,12 +17,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Component.cpp" />
     <ClCompile Include="General\BaseConverter.cpp" />
     <ClCompile Include="General\Calculator.cpp" />
     <ClCompile Include="HxNxToolkit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Productivity\Checklist\Checklist.cpp" />
     <ClCompile Include="Productivity\Checklist\ChecklistEntry.cpp" />
+    <ClCompile Include="Productivity\TaskTracker\TaskTracker.cpp" />
+    <ClCompile Include="Productivity\TaskTracker\TaskTrackerEntry.cpp" />
     <ClCompile Include="Util\Time.cpp" />
     <ClCompile Include="Time\Stopwatch.cpp" />
     <ClCompile Include="Time\Timer.cpp" />
@@ -37,6 +40,8 @@
     <QtUic Include="HxNxToolkit.ui" />
     <QtUic Include="Productivity\Checklist\Checklist.ui" />
     <QtUic Include="Productivity\Checklist\ChecklistEntry.ui" />
+    <QtUic Include="Productivity\TaskTracker\TaskTracker.ui" />
+    <QtUic Include="Productivity\TaskTracker\TaskTrackerEntry.ui" />
     <QtUic Include="Time\Stopwatch.ui" />
     <QtUic Include="Time\Timer.ui" />
     <QtUic Include="UI\Tab.ui" />
@@ -68,6 +73,10 @@
     <QtMoc Include="Productivity\Checklist\ChecklistEntry.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="Productivity\TaskTracker\TaskTracker.h" />
+    <QtMoc Include="Productivity\TaskTracker\TaskTrackerEntry.h" />
+    <ClInclude Include="Enums\ToolType.h" />
+    <QtMoc Include="UI\Component.h" />
     <ClInclude Include="Util\Time.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -4,6 +4,11 @@
 #include <QDateTime>
 #include <QTime>
 
+enum class TimeComponent : int
+{
+	Hour, Minute, Second
+};
+
 class Time
 {
 public:
@@ -60,6 +65,8 @@ public:
 	static QString GetTimeString(const QDateTime& dateTime);
 
 	static int64_t Now();
+
+	static Time Parse(const QString& timeStr, TimeComponent firstComponent = TimeComponent::Hour);
 
 private:
 	int64_t time{};

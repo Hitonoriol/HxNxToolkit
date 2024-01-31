@@ -53,6 +53,15 @@
     <ClCompile Include="Util\Time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Productivity\TaskTracker\TaskTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Productivity\TaskTracker\TaskTrackerEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -77,6 +86,15 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Productivity\Checklist\ChecklistEntry.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Productivity\TaskTracker\TaskTracker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Productivity\TaskTracker\TaskTrackerEntry.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="UI\Component.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -105,9 +123,18 @@
     <QtUic Include="Productivity\Checklist\ChecklistEntry.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="Productivity\TaskTracker\TaskTracker.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Productivity\TaskTracker\TaskTrackerEntry.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Util\Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums\ToolType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

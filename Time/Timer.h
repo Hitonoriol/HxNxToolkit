@@ -3,16 +3,21 @@
 #include <QWidget>
 #include "ui_Timer.h"
 
-#include <QTimer>
 #include "Util/Time.h"
+#include "UI/Component.h"
 
-class Timer : public QWidget
+#include <QTimer>
+
+class Timer : public Component
 {
 	Q_OBJECT
 
 public:
 	Timer(QWidget *parent = nullptr);
 	~Timer();
+
+	virtual QJsonObject SaveState() override;
+	virtual void LoadState(const QJsonObject& state) override;
 
 signals:
 	void TimerCompleted(int64_t startTime, Time duration);

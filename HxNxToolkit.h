@@ -3,7 +3,10 @@
 #include <QMainWindow>
 #include "ui_HxNxToolkit.h"
 
-#include "UI/Tab.h"
+#include "Enums/ToolType.h"
+
+class Tab;
+class Component;
 
 class HxNxToolkit : public QMainWindow
 {
@@ -16,36 +19,33 @@ public:
 	Tab* NewTab();
 	Tab* GetCurrentTab();
 
-	enum class Tool
-	{
-		// General
-		BaseConverter,
-		Calculator,
-
-		// Productivity
-		Checklist,
-
-		// Time
-		Stopwatch,
-		Timer
-	};
+	using Tool = ToolType;
 	Q_ENUM(Tool)
 
 public slots:
 	void NewTabTriggered();
 
+	void SaveTabTriggered();
+	void LoadTabTriggered();
+
+	void LoadComponent(ToolType componentType, const QJsonObject& state);
+
 	// General
-	void OpenBaseConverter();
-	void OpenCalculator();
+	Component* OpenBaseConverter();
+	Component* OpenCalculator();
 
 	// Productivity
-	void OpenChecklist();
+	Component* OpenChecklist();
+	Component* OpenTaskTracker();
 
 	// Time
-	void OpenStopwatch();
-	void OpenTimer();
+	Component* OpenStopwatch();
+	Component* OpenTimer();
 
 private:
+	void SaveTab();
+	void LoadTab();
+
 	Ui::HxNxToolkitClass ui;
 
 	int curTabIdx{};

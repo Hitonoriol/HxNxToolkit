@@ -9,6 +9,26 @@ ChecklistEntry::ChecklistEntry(QWidget *parent)
 ChecklistEntry::~ChecklistEntry()
 {}
 
+void ChecklistEntry::SetChecked(bool checked)
+{
+	ui.CheckBox->setChecked(checked);
+}
+
+bool ChecklistEntry::IsChecked() const
+{
+	return ui.CheckBox->isChecked();
+}
+
+void ChecklistEntry::SetDescription(const QString& description)
+{
+	ui.DescriptionField->setText(description);
+}
+
+QString ChecklistEntry::GetDescription() const
+{
+	return ui.DescriptionField->text();
+}
+
 void ChecklistEntry::OnDeletePressed()
 {
 	this->deleteLater();

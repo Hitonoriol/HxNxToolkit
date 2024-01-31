@@ -6,7 +6,7 @@
 #include <comdef.h>
 
 BaseConverter::BaseConverter(QWidget *parent)
-	: QWidget(parent)
+	: Component(parent, ToolType::BaseConverter)
 {
 	ui.setupUi(this);
 
@@ -19,6 +19,24 @@ BaseConverter::BaseConverter(QWidget *parent)
 
 BaseConverter::~BaseConverter()
 {}
+
+QJsonObject BaseConverter::SaveState()
+{
+	auto state = Component::SaveState();
+	state["InputBase"] = ui.InputBaseSelector->currentIndex();
+	state["OutputBase"] = ui.OutputBaseSelector->currentIndex();
+	state["InputValue"] = ui.InputField->text();
+	state["OutputValue"] = ui.OutputField->text();
+	return state;
+}
+
+void BaseConverter::LoadState(const QJsonObject& state)
+{
+	ui.InputBaseSelector->setCurrentIndex(state["InputBase"].toInt());
+	ui.OutputBaseSelector->setCurrentIndex(state["OutputBase"].toInt());
+	ui.InputField->setText(state["InputValue"].toString());
+	ui.OutputField->setText(state["OutputValue"].toString());
+}
 
 void BaseConverter::InputTextChanged(QString text)
 {

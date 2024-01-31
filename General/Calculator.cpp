@@ -3,13 +3,27 @@
 #include <tinyexpr/tinyexpr.h>
 
 Calculator::Calculator(QWidget *parent)
-	: QWidget(parent)
+	: Component(parent, ToolType::Calculator)
 {
 	ui.setupUi(this);
 }
 
 Calculator::~Calculator()
 {}
+
+QJsonObject Calculator::SaveState()
+{
+	auto state = Component::SaveState();
+	state["Expression"] = ui.InputField->text();
+	state["Result"] = ui.OutputField->text();
+	return state;
+}
+
+void Calculator::LoadState(const QJsonObject& state)
+{
+	ui.InputField->setText(state["Expression"].toString());
+	ui.OutputField->setText(state["Result"].toString());
+}
 
 void Calculator::InputTextChanged(QString text)
 {

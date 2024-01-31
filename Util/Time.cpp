@@ -45,3 +45,38 @@ int64_t Time::Now()
 {
 	return QDateTime::currentMSecsSinceEpoch();
 }
+
+Time Time::Parse(const QString& timeStr, TimeComponent firstComponent)
+{
+	Time result;
+	auto toks = timeStr.split(":", Qt::SkipEmptyParts);
+	auto currentComponent = firstComponent;
+	for (int64_t i = 0; i < toks.size(); ++i) {
+		int componentValue = toks[i].toInt();
+		switch (currentComponent) {
+		case TimeComponent::Hour:
+			result.SetTime(componentValue, 0, 0, result.GetTimeMs());
+			break;
+
+		case TimeComponent::Minute:
+			result.SetTime(0, componentValue, 0, result.GetTimeMs());
+			break;
+
+		case TimeComponent::Second:
+			result.SetTime(0, 0, componentValue, result.GetTimeMs());
+			break;
+
+		default:
+			break;
+		}
+
+		int componentIdx = static_cast<int>(currentComponent) - 1;
+		if (componentIdx < 0) {
+			break;
+		}
+
+		currentComponent = static_cast<TimeComponent>(componentIdx);
+	}
+
+	return result;
+}

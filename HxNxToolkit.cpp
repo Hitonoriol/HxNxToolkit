@@ -4,12 +4,20 @@
 #include "General/Calculator.h"
 
 #include "Productivity/Checklist/Checklist.h"
+#include "Productivity/TaskTracker/TaskTracker.h"
 
 #include "Time/Stopwatch.h"
 #include "Time/Timer.h"
 
+#include "UI/Tab.h"
+
 #include <QDateTime>
 #include <QMessageBox>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include <QFileDialog>
+#include <QByteArray>
 
 HxNxToolkit::HxNxToolkit(QWidget *parent)
 	: QMainWindow(parent)
@@ -21,12 +29,50 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 HxNxToolkit::~HxNxToolkit()
 {}
 
+void HxNxToolkit::LoadComponent(ToolType componentType, const QJsonObject& state)
+{
+	Component* component{};
+	switch (componentType) {
+	case ToolType::BaseConverter:
+		component = OpenBaseConverter();
+		break;
+
+	case ToolType::Calculator:
+		component = OpenCalculator();
+		break;
+
+	case ToolType::Checklist:
+		component = OpenChecklist();
+		break;
+
+	case ToolType::TaskTracker:
+		component = OpenTaskTracker();
+		break;
+
+	case ToolType::Stopwatch:
+		component = OpenStopwatch();
+		break;
+
+	case ToolType::Timer:
+		component = OpenTimer();
+		break;
+
+	default:
+		break;
+	}
+
+	if (component) {
+		component->LoadState(state);
+	}
+}
+
 Tab* HxNxToolkit::NewTab()
 {
 	auto tab = new Tab;
 	auto title = Time::GetTimeString(QDateTime::currentDateTime());
 	curTabIdx = ui.Tabs->addTab(tab, title);
 	ui.Tabs->setCurrentWidget(tab);
+	connect(tab, &Tab::LoadComponent, this, &HxNxToolkit::LoadComponent);
 	return tab;
 }
 
@@ -40,31 +86,45 @@ void HxNxToolkit::NewTabTriggered()
 	NewTab();
 }
 
-void HxNxToolkit::OpenBaseConverter()
+void HxNxToolkit::SaveTabTriggered()
+{
+	SaveTab();
+}
+
+void HxNxToolkit::LoadTabTriggered()
+{
+	LoadTab();
+}
+
+Component* HxNxToolkit::OpenBaseConverter()
 {
 	auto converter = new BaseConverter;
-	GetCurrentTab()->AddWidget(converter, "Base converter");
+	GetCurrentTab()->AddComponent(converter, "Base converter");
+	return converter;
 }
 
-void HxNxToolkit::OpenCalculator()
+Component* HxNxToolkit::OpenCalculator()
 {
 	auto calculator = new Calculator;
-	GetCurrentTab()->AddWidget(calculator, "Calculator");
+	GetCurrentTab()->AddComponent(calculator, "Calculator");
+	return calculator;
 }
 
-void HxNxToolkit::OpenChecklist()
+Component* HxNxToolkit::OpenChecklist()
 {
 	auto checklist = new Checklist;
-	GetCurrentTab()->AddWidget(checklist, "Checklist");
+	GetCurrentTab()->AddComponent(checklist, "Checklist");
+	return checklist;
 }
 
-void HxNxToolkit::OpenStopwatch()
+Component* HxNxToolkit::OpenStopwatch()
 {
 	auto stopwatch = new Stopwatch;
-	GetCurrentTab()->AddWidget(stopwatch, "Stopwatch");
+	GetCurrentTab()->AddComponent(stopwatch, "Stopwatch");
+	return stopwatch;
 }
 
-void HxNxToolkit::OpenTimer()
+Component* HxNxToolkit::OpenTimer()
 {
 	auto timer = new Timer;
 	connect(timer, &Timer::TimerCompleted, this, [this](int64_t startTime, Time duration) {
@@ -80,5 +140,77 @@ void HxNxToolkit::OpenTimer()
 		notification->show();
 	});
 
-	GetCurrentTab()->AddWidget(timer, "Timer");
+	GetCurrentTab()->AddComponent(timer, "Timer");
+	return timer;
+}
+
+Component* HxNxToolkit::OpenTaskTracker()
+{
+	auto taskTracker = new TaskTracker;
+	GetCurrentTab()->AddComponent(taskTracker, "Task tracker");
+	return taskTracker;
+}
+
+void HxNxToolkit::SaveTab()
+{
+	auto currentTab = GetCurrentTab();
+	auto tabJson = currentTab->SaveState();
+	tabJson["Title"] = ui.Tabs->tabText(ui.Tabs->currentIndex());
+
+	QJsonDocument doc(tabJson);
+	auto savePath = currentTab->GetSavePath();
+	QFile saveFile;
+	if (savePath.isEmpty()) {
+		QFileDialog dialog(this);
+		dialog.setFileMode(QFileDialog::AnyFile);
+		dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
+		dialog.setAcceptMode(QFileDialog::AcceptSave);
+
+		QStringList files;
+		while (files.isEmpty()) {
+			dialog.exec();
+			files = dialog.selectedFiles();
+		}
+
+		auto newPath = files.first();
+		saveFile.setFileName(newPath);
+		currentTab->SetSavePath(newPath);
+	} else {
+		saveFile.setFileName(savePath);
+	}
+	
+	if (!saveFile.open(QFile::WriteOnly)) {
+		return;
+	}
+
+	saveFile.write(doc.toJson());
+	saveFile.close();
+}
+
+void HxNxToolkit::LoadTab()
+{
+	auto tab = NewTab();
+
+	QFileDialog dialog(this);
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
+	dialog.setAcceptMode(QFileDialog::AcceptOpen);
+	
+	QStringList files;
+	while (files.isEmpty()) {
+		dialog.exec();
+		files = dialog.selectedFiles();
+	}
+
+	auto tabPath = files.first();
+	QFile tabFile(tabPath);
+
+	if (!tabFile.open(QFile::ReadOnly)) {
+		return;
+	}
+
+	auto tabDoc = QJsonDocument::fromJson(tabFile.readAll());
+	auto tabObject = tabDoc.object();
+	ui.Tabs->setTabText(ui.Tabs->currentIndex(), tabObject["Title"].toString());
+	tab->LoadState(tabObject);
 }

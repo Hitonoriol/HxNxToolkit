@@ -11,6 +11,12 @@ public:
 	ChecklistEntry(QWidget *parent = nullptr);
 	~ChecklistEntry();
 
+	void SetChecked(bool checked);
+	bool IsChecked() const;
+
+	void SetDescription(const QString& description);
+	QString GetDescription() const;
+
 signals:
 	void CheckboxValueChanged(bool value);
 	void DescriptionChanged(QString text);

@@ -65,6 +65,8 @@
      <string>File</string>
     </property>
     <addaction name="ActionNewTab"/>
+    <addaction name="ActionLoadTab"/>
+    <addaction name="ActionSaveTab"/>
    </widget>
    <widget class="QMenu" name="MenuGeneral">
     <property name="title">
@@ -78,6 +80,7 @@
      <string>Productivity</string>
     </property>
     <addaction name="ActionChecklist"/>
+    <addaction name="ActionTaskTracker"/>
    </widget>
    <widget class="QMenu" name="MenuTime">
     <property name="title">
@@ -133,6 +136,21 @@
   <action name="ActionTimer">
    <property name="text">
     <string>Timer</string>
+   </property>
+  </action>
+  <action name="ActionTaskTracker">
+   <property name="text">
+    <string>Task tracker</string>
+   </property>
+  </action>
+  <action name="ActionLoadTab">
+   <property name="text">
+    <string>Load tab</string>
+   </property>
+  </action>
+  <action name="ActionSaveTab">
+   <property name="text">
+    <string>Save tab</string>
    </property>
   </action>
  </widget>
@@ -235,6 +253,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionTaskTracker</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OpenTaskTracker()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionSaveTab</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>SaveTabTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionLoadTab</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>LoadTabTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
@@ -243,5 +309,8 @@
   <slot>OpenChecklist()</slot>
   <slot>OpenStopwatch()</slot>
   <slot>OpenTimer()</slot>
+  <slot>OpenTaskTracker()</slot>
+  <slot>SaveTabTriggered()</slot>
+  <slot>LoadTabTriggered()</slot>
  </slots>
 </ui>

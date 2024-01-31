@@ -3,7 +3,7 @@
 #include "Util/Time.h"
 
 Timer::Timer(QWidget *parent)
-	: QWidget(parent)
+	: Component(parent, ToolType::Timer)
 {
 	ui.setupUi(this);
 	connect(&updateTimer, &QTimer::timeout, this, &Timer::OnUpdateTimerTick);
@@ -11,6 +11,22 @@ Timer::Timer(QWidget *parent)
 
 Timer::~Timer()
 {}
+
+QJsonObject Timer::SaveState()
+{
+	auto state = Component::SaveState();
+	state["HourBox"] = ui.HourBox->value();
+	state["MinuteBox"] = ui.MinuteBox->value();
+	state["SecondBox"] = ui.SecondBox->value();
+	return state;
+}
+
+void Timer::LoadState(const QJsonObject& state)
+{
+	ui.HourBox->setValue(state["HourBox"].toInt());
+	ui.MinuteBox->setValue(state["MinuteBox"].toInt());
+	ui.SecondBox->setValue(state["SecondBox"].toInt());
+}
 
 void Timer::OnStartButtonPress()
 {

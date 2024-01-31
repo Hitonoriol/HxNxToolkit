@@ -3,13 +3,18 @@
 #include <QWidget>
 #include "ui_BaseConverter.h"
 
-class BaseConverter : public QWidget
+#include "UI/Component.h"
+
+class BaseConverter : public Component
 {
 	Q_OBJECT
 
 public:
 	BaseConverter(QWidget *parent = nullptr);
 	~BaseConverter();
+
+	virtual QJsonObject SaveState() override;
+	virtual void LoadState(const QJsonObject& state) override;
 
 	enum class Base
 	{

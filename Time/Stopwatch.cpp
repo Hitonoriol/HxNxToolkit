@@ -6,7 +6,7 @@
 #include <QTimeZone>
 
 Stopwatch::Stopwatch(QWidget *parent)
-	: QWidget(parent)
+	: Component(parent, ToolType::Stopwatch)
 {
 	ui.setupUi(this);
 	connect(&updateTimer, &QTimer::timeout, this, &Stopwatch::UpdateTimerTick);
@@ -14,6 +14,16 @@ Stopwatch::Stopwatch(QWidget *parent)
 
 Stopwatch::~Stopwatch()
 {}
+
+QJsonObject Stopwatch::SaveState()
+{
+	auto state = Component::SaveState();
+	return state;
+}
+
+void Stopwatch::LoadState(const QJsonObject& state)
+{
+}
 
 void Stopwatch::OnStartPausePress()
 {
