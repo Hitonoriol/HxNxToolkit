@@ -86,6 +86,11 @@ void HxNxToolkit::NewTabTriggered()
 	NewTab();
 }
 
+void HxNxToolkit::OnTabClose(int idx)
+{
+	ui.Tabs->removeTab(idx);
+}
+
 void HxNxToolkit::SaveTabTriggered()
 {
 	SaveTab();

@@ -301,6 +301,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>Tabs</sender>
+   <signal>tabCloseRequested(int)</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OnTabClose(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>299</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
@@ -312,5 +328,6 @@
   <slot>OpenTaskTracker()</slot>
   <slot>SaveTabTriggered()</slot>
   <slot>LoadTabTriggered()</slot>
+  <slot>OnTabClose(int)</slot>
  </slots>
 </ui>

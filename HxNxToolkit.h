@@ -24,6 +24,7 @@ public:
 
 public slots:
 	void NewTabTriggered();
+	void OnTabClose(int idx);
 
 	void SaveTabTriggered();
 	void LoadTabTriggered();
