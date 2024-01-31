@@ -27,6 +27,8 @@ public:
 public slots:
 	void NewTabTriggered();
 	void OnTabClose(int idx);
+	void OnTabModified(Tab* tab);
+	void OnTabSaved(Tab* tab);
 
 	void Autosave();
 

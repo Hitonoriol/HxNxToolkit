@@ -29,6 +29,9 @@ public:
 signals:
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
 
+	void TabModified(Tab* tab);
+	void TabSaved(Tab* tab);
+
 private slots:
 	void ComponentModified(Component* component);
 

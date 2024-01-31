@@ -16,6 +16,7 @@ Tab::~Tab()
 
 void Tab::ComponentModified(Component* component)
 {
+	emit TabModified(this);
 	modified = true;
 }
 
@@ -56,6 +57,7 @@ QJsonObject Tab::SaveState()
 		arr.append(component->SaveState());
 	}
 	state["Components"] = arr;
+	emit TabSaved(this);
 	modified = false;
 	return state;
 }

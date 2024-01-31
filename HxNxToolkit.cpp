@@ -18,6 +18,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QByteArray>
+#include <QRegularExpression>
 
 HxNxToolkit::HxNxToolkit(QWidget *parent)
 	: QMainWindow(parent)
@@ -76,6 +77,8 @@ Tab* HxNxToolkit::NewTab()
 	curTabIdx = ui.Tabs->addTab(tab, title);
 	ui.Tabs->setCurrentWidget(tab);
 	connect(tab, &Tab::LoadComponent, this, &HxNxToolkit::LoadComponent);
+	connect(tab, &Tab::TabModified, this, &HxNxToolkit::OnTabModified);
+	connect(tab, &Tab::TabSaved, this, &HxNxToolkit::OnTabSaved);
 	return tab;
 }
 
@@ -92,6 +95,22 @@ void HxNxToolkit::NewTabTriggered()
 void HxNxToolkit::OnTabClose(int idx)
 {
 	ui.Tabs->removeTab(idx);
+}
+
+void HxNxToolkit::OnTabModified(Tab* tab)
+{
+	auto idx = ui.Tabs->indexOf(tab);
+	if (!tab->IsModified()) {
+		ui.Tabs->setTabText(idx, ui.Tabs->tabText(idx) + "*");
+	}
+}
+
+void HxNxToolkit::OnTabSaved(Tab* tab)
+{
+	auto idx = ui.Tabs->indexOf(tab);
+	if (tab->IsModified()) {
+		ui.Tabs->setTabText(idx, ui.Tabs->tabText(idx).removeLast());
+	}
 }
 
 void HxNxToolkit::Autosave()
@@ -173,24 +192,31 @@ void HxNxToolkit::SaveTab(int idx)
 {
 	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
 	auto tabJson = tab->SaveState();
-	tabJson["Title"] = ui.Tabs->tabText(idx);
+	auto title = ui.Tabs->tabText(idx);
+	tabJson["Title"] = title;
 
 	QJsonDocument doc(tabJson);
 	auto savePath = tab->GetSavePath();
 	QFile saveFile;
 	if (savePath.isEmpty()) {
+		auto suggestedName = title;
+		suggestedName.replace(QRegularExpression("[^a-zA-Z0-9]"), "-");
+		suggestedName.replace("--", "-");
+
 		QFileDialog dialog(this);
+		dialog.selectFile(suggestedName);
 		dialog.setFileMode(QFileDialog::AnyFile);
 		dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
 		dialog.setAcceptMode(QFileDialog::AcceptSave);
 
-		QStringList files;
-		while (files.isEmpty()) {
-			dialog.exec();
-			files = dialog.selectedFiles();
+		auto result = dialog.exec();
+		auto files = dialog.selectedFiles();
+
+		auto newPath = files.isEmpty() ? QString("") : files.first();
+		if (!result || newPath.isEmpty()) {
+			return;
 		}
 
-		auto newPath = files.first();
 		saveFile.setFileName(newPath);
 		tab->SetSavePath(newPath);
 	} else {
@@ -221,15 +247,15 @@ void HxNxToolkit::LoadTab()
 	dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
 	dialog.setAcceptMode(QFileDialog::AcceptOpen);
 	
-	QStringList files;
-	while (files.isEmpty()) {
-		dialog.exec();
-		files = dialog.selectedFiles();
+	auto result = dialog.exec();
+	auto files = dialog.selectedFiles();
+
+	auto tabPath = files.isEmpty() ? QString("") : files.first();
+	if (!result || tabPath.isEmpty()) {
+		return;
 	}
 
-	auto tabPath = files.first();
 	QFile tabFile(tabPath);
-
 	if (!tabFile.open(QFile::ReadOnly)) {
 		return;
 	}
