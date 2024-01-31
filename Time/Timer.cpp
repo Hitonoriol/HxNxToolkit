@@ -48,6 +48,8 @@ void Timer::OnStartButtonPress()
 		updateTimer.stop();
 		ui.StartPauseButton->setText("Resume");
 	}
+
+	emit Modified(this);
 }
 
 void Timer::OnStopButtonPress()
@@ -61,6 +63,8 @@ void Timer::OnStopButtonPress()
 	ui.StartPauseButton->setText("Start");
 	ui.TimeLabel->setText(Time::GetTimeString(0));
 	ui.TimeProgress->setValue(0);
+
+	emit Modified(this);
 }
 
 void Timer::OnUpdateTimerTick()

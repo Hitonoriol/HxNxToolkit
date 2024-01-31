@@ -65,8 +65,10 @@
      <string>File</string>
     </property>
     <addaction name="ActionNewTab"/>
-    <addaction name="ActionLoadTab"/>
+    <addaction name="separator"/>
     <addaction name="ActionSaveTab"/>
+    <addaction name="ActionLoadTab"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="MenuGeneral">
     <property name="title">

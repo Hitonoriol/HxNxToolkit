@@ -14,6 +14,11 @@ Tab::Tab(QWidget* parent)
 Tab::~Tab()
 {}
 
+void Tab::ComponentModified(Component* component)
+{
+	modified = true;
+}
+
 void Tab::SetSavePath(const QString& savePath)
 {
 	this->savePath = savePath;
@@ -37,6 +42,8 @@ void Tab::AddComponent(Component* component, const QString& title)
 	scrollLayout->removeItem(ui.BottomSpacer);
 	scrollLayout->addWidget(group);
 	scrollLayout->addItem(ui.BottomSpacer);
+
+	connect(component, &Component::Modified, this, &Tab::ComponentModified);
 }
 
 QJsonObject Tab::SaveState()
@@ -49,6 +56,7 @@ QJsonObject Tab::SaveState()
 		arr.append(component->SaveState());
 	}
 	state["Components"] = arr;
+	modified = false;
 	return state;
 }
 
@@ -60,4 +68,9 @@ void Tab::LoadState(const QJsonObject& state)
 		auto componentType = static_cast<ToolType>(componentObj["Type"].toInt());
 		emit LoadComponent(componentType, componentObj);
 	}
+}
+
+bool Tab::IsModified()
+{
+	return modified;
 }

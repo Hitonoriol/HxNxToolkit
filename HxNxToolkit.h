@@ -5,6 +5,8 @@
 
 #include "Enums/ToolType.h"
 
+#include <QTimer>
+
 class Tab;
 class Component;
 
@@ -26,6 +28,8 @@ public slots:
 	void NewTabTriggered();
 	void OnTabClose(int idx);
 
+	void Autosave();
+
 	void SaveTabTriggered();
 	void LoadTabTriggered();
 
@@ -44,10 +48,11 @@ public slots:
 	Component* OpenTimer();
 
 private:
+	void SaveTab(int idx);
 	void SaveTab();
 	void LoadTab();
 
 	Ui::HxNxToolkitClass ui;
-
+	QTimer autosaveTimer;
 	int curTabIdx{};
 };

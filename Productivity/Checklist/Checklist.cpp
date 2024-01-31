@@ -49,6 +49,7 @@ ChecklistEntry* Checklist::AddEntry()
 	layout->addWidget(entry);
 	layout->addWidget(ui.AddEntryButton);
 
+	emit Modified(this);
 	return entry;
 }
 

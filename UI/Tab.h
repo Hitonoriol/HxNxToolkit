@@ -24,11 +24,17 @@ public:
 	QJsonObject SaveState();
 	void LoadState(const QJsonObject& state);
 
+	bool IsModified();
+
 signals:
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
+
+private slots:
+	void ComponentModified(Component* component);
 
 private:
 	Ui::TabClass ui;
 
 	QString savePath;
+	bool modified{};
 };

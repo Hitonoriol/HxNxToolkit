@@ -45,4 +45,5 @@ void Calculator::InputTextChanged(QString text)
 	}
 
 	ui.OutputField->setText(resultStr);
+	emit Modified(this);
 }

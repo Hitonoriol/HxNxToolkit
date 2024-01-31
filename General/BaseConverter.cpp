@@ -56,6 +56,8 @@ void BaseConverter::InputTextChanged(QString text)
 
 	_com_error comError(hResult);
 	ui.HROutputField->setText(QString::fromStdWString(comError.ErrorMessage()));
+
+	emit Modified(this);
 }
 
 void BaseConverter::InputBaseChanged(int)

@@ -24,6 +24,9 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 {
 	ui.setupUi(this);
 	NewTab();
+
+	connect(&autosaveTimer, &QTimer::timeout, this, &HxNxToolkit::Autosave);
+	autosaveTimer.start(std::chrono::milliseconds{60'000});
 }
 
 HxNxToolkit::~HxNxToolkit()
@@ -91,6 +94,16 @@ void HxNxToolkit::OnTabClose(int idx)
 	ui.Tabs->removeTab(idx);
 }
 
+void HxNxToolkit::Autosave()
+{
+	for (size_t i = 0; i < ui.Tabs->count(); ++i) {
+		auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(i));
+		if (!tab->GetSavePath().isEmpty() && tab->IsModified()) {
+			SaveTab(i);
+		}
+	}
+}
+
 void HxNxToolkit::SaveTabTriggered()
 {
 	SaveTab();
@@ -156,14 +169,14 @@ Component* HxNxToolkit::OpenTaskTracker()
 	return taskTracker;
 }
 
-void HxNxToolkit::SaveTab()
+void HxNxToolkit::SaveTab(int idx)
 {
-	auto currentTab = GetCurrentTab();
-	auto tabJson = currentTab->SaveState();
-	tabJson["Title"] = ui.Tabs->tabText(ui.Tabs->currentIndex());
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
+	auto tabJson = tab->SaveState();
+	tabJson["Title"] = ui.Tabs->tabText(idx);
 
 	QJsonDocument doc(tabJson);
-	auto savePath = currentTab->GetSavePath();
+	auto savePath = tab->GetSavePath();
 	QFile saveFile;
 	if (savePath.isEmpty()) {
 		QFileDialog dialog(this);
@@ -179,17 +192,24 @@ void HxNxToolkit::SaveTab()
 
 		auto newPath = files.first();
 		saveFile.setFileName(newPath);
-		currentTab->SetSavePath(newPath);
+		tab->SetSavePath(newPath);
 	} else {
 		saveFile.setFileName(savePath);
 	}
-	
+
 	if (!saveFile.open(QFile::WriteOnly)) {
+		tab->SetSavePath("");
 		return;
 	}
 
 	saveFile.write(doc.toJson());
 	saveFile.close();
+}
+
+void HxNxToolkit::SaveTab()
+{
+	auto currentTab = ui.Tabs->currentIndex();
+	SaveTab(currentTab);
 }
 
 void HxNxToolkit::LoadTab()

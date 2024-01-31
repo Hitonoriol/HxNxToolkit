@@ -19,6 +19,9 @@ public:
 	virtual QJsonObject SaveState();
 	virtual void LoadState(const QJsonObject& state);
 
+signals:
+	void Modified(Component* component);
+
 private:
 	ToolType type;
 };

@@ -56,6 +56,7 @@ TaskTrackerEntry* TaskTracker::AddTaskEntry()
 
 	lastEntry = nextEntry;
 
+	emit Modified(this);
 	return nextEntry;
 }
 
@@ -64,4 +65,5 @@ void TaskTracker::OnStartSessionPress()
 	AddTaskEntry();
 	ui.StartButton->setVisible(false);
 	ui.DurationWidget->setEnabled(false);
+	emit Modified(this);
 }

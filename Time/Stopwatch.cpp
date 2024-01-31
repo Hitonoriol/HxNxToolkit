@@ -38,6 +38,8 @@ void Stopwatch::OnStartPausePress()
 		ui.StartPauseButton->setText("Resume");
 		ui.TimePointButton->setEnabled(false);
 	}
+
+	emit Modified(this);
 }
 
 void Stopwatch::OnStopPress()
@@ -51,6 +53,8 @@ void Stopwatch::OnStopPress()
 	ui.TimeLabel->setText(Time::GetTimeString(0));
 	ui.TimeTable->setRowCount(0);
 	ui.TimePointButton->setEnabled(false);
+
+	emit Modified(this);
 }
 
 void Stopwatch::OnTimePointPress()
@@ -66,6 +70,8 @@ void Stopwatch::OnTimePointPress()
 	ui.TimeTable->insertRow(newIdx);
 	ui.TimeTable->setItem(newIdx, 0, new QTableWidgetItem(timeStr));
 	ui.TimeTable->setItem(newIdx, 1, new QTableWidgetItem("+" + diffStr));
+
+	emit Modified(this);
 
 }
 
