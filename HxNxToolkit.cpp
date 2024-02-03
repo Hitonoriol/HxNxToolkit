@@ -10,12 +10,14 @@
 #include "Time/Timer.h"
 
 #include "UI/Tab.h"
+#include "Util/Settings.h"
 
 #include <QDateTime>
 #include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFile>
+#include <QDir>
 #include <QFileDialog>
 #include <QByteArray>
 #include <QRegularExpression>
@@ -25,6 +27,11 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 {
 	ui.setupUi(this);
 	NewTab();
+
+	auto lastSaveDir = Settings::GetString(Settings::LastSaveDir);
+	auto savePath = lastSaveDir.isEmpty() ? QApplication::applicationDirPath() + "/Workspace" : lastSaveDir;
+	QDir().mkdir(savePath);
+	Settings::SetString(Settings::LastSaveDir, savePath);
 
 	connect(&autosaveTimer, &QTimer::timeout, this, &HxNxToolkit::Autosave);
 	autosaveTimer.start(std::chrono::milliseconds{60'000});
@@ -204,6 +211,7 @@ void HxNxToolkit::SaveTab(int idx)
 		suggestedName.replace("--", "-");
 
 		QFileDialog dialog(this);
+		dialog.setDirectory({Settings::GetString(Settings::LastSaveDir)});
 		dialog.selectFile(suggestedName);
 		dialog.setFileMode(QFileDialog::AnyFile);
 		dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
@@ -217,6 +225,7 @@ void HxNxToolkit::SaveTab(int idx)
 			return;
 		}
 
+		savePath = newPath;
 		saveFile.setFileName(newPath);
 		tab->SetSavePath(newPath);
 	} else {
@@ -229,6 +238,7 @@ void HxNxToolkit::SaveTab(int idx)
 	}
 
 	saveFile.write(doc.toJson());
+	Settings::SetString(Settings::LastSaveDir, savePath);
 	saveFile.close();
 }
 
@@ -243,6 +253,7 @@ void HxNxToolkit::LoadTab()
 	auto tab = NewTab();
 
 	QFileDialog dialog(this);
+	dialog.setDirectory({Settings::GetString(Settings::LastSaveDir)});
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
 	dialog.setAcceptMode(QFileDialog::AcceptOpen);
