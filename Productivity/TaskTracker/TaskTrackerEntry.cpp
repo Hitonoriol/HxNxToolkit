@@ -24,6 +24,7 @@ uint64_t TaskTrackerEntry::GetNumber()
 void TaskTrackerEntry::SetStartTime(const QString& time)
 {
 	ui.StartField->setText(time);
+	UpdateTime();
 }
 
 QString TaskTrackerEntry::GetStartTime() const
@@ -34,6 +35,7 @@ QString TaskTrackerEntry::GetStartTime() const
 void TaskTrackerEntry::SetEndTime(const QString& time)
 {
 	ui.EndField->setText(time);
+	UpdateTime();
 }
 
 QString TaskTrackerEntry::GetEndTime() const
@@ -51,22 +53,106 @@ void TaskTrackerEntry::SetDescription(const QString& description)
 	ui.DescriptionField->setText(description);
 }
 
-void TaskTrackerEntry::OnEndButtonPress()
+int64_t TaskTrackerEntry::GetDuration()
 {
-	auto time = QDateTime::fromString(ui.StartField->text(), "hh:mm");
-	auto startTime = time.toMSecsSinceEpoch()/*Time::Parse(ui.StartField->text()).GetTimeMs()*/;
-	auto endTime = Time::Now();
+	auto startTimeStr = ui.StartField->text();
+	auto endTimeStr = ui.EndField->text();
 
-	auto diff = endTime - startTime;
+	if (startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+		return 0;
+	}
+
+	auto start = QDateTime::fromString(startTimeStr, "hh:mm").toMSecsSinceEpoch();
+	auto end = QDateTime::fromString(endTimeStr, "hh:mm").toMSecsSinceEpoch();
+	return end - start;
+}
+
+bool TaskTrackerEntry::IsFinished()
+{
+	return finished;
+}
+
+void TaskTrackerEntry::SetFinished(bool value)
+{
+	finished = value;
+}
+
+QLineEdit* TaskTrackerEntry::GetEndField()
+{
+	return ui.EndField;
+}
+
+QPushButton* TaskTrackerEntry::GetEndButton()
+{
+	return ui.EndButton;
+}
+
+void TaskTrackerEntry::OnEndFieldModified(QString newTime)
+{
+	if (!finished) {
+		return;
+	}
+
+	UpdateTime();
+
+	emit EndFieldModified(newTime);
+}
+
+void TaskTrackerEntry::OnStartFieldModified(QString newTime)
+{
+	if (!finished) {
+		return;
+	}
+
+	UpdateTime();
+
+	emit StartFieldModified(newTime);
+}
+
+void TaskTrackerEntry::UpdateTime(int64_t begin, int64_t end, bool updateEndField)
+{
+	auto diff = end - begin;
 	float hours = ((diff / 1000) % 86400) / 3600.0f;
 	if (diff <= 0) {
 		return;
 	}
 
-	ui.EndField->setText(QDateTime::fromMSecsSinceEpoch(endTime).toString("hh:mm"));
+	if (updateEndField) {
+		ui.EndField->setText(QDateTime::fromMSecsSinceEpoch(end).toString("hh:mm"));
+	}
+
 	ui.DurationField->setText(Time::GetTimeString(diff));
 	ui.DurationHoursField->setText(QString::number(hours, 'f', 2));
-	ui.EndButton->setVisible(false);
+}
 
+void TaskTrackerEntry::UpdateTime()
+{
+	try {
+		auto startTimeStr = ui.StartField->text();
+		auto endTimeStr = ui.EndField->text();
+		if (startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+			return;
+		}
+
+		auto start = QDateTime::fromString(startTimeStr, "hh:mm").toMSecsSinceEpoch();
+		auto end = QDateTime::fromString(endTimeStr, "hh:mm").toMSecsSinceEpoch();
+		UpdateTime(start, end, false);
+	}
+	catch (...) {
+		ui.DurationField->setText("");
+		ui.DurationHoursField->setText("");
+	}
+}
+
+void TaskTrackerEntry::OnEndButtonPress()
+{
+	auto time = QDateTime::fromString(ui.StartField->text(), "hh:mm");
+	auto startTime = time.toMSecsSinceEpoch();
+	auto endTime = Time::Now();
+
+	finished = true;
+	UpdateTime(startTime, endTime);
+	ui.EndButton->setVisible(false);
+	ui.EndField->setReadOnly(false);
 	emit EndButtonPressed();
 }

@@ -113,8 +113,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>EndField</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TaskTrackerEntryClass</receiver>
+   <slot>OnEndFieldModified(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>146</x>
+     <y>35</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>StartField</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TaskTrackerEntryClass</receiver>
+   <slot>OnStartFieldModified(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>63</x>
+     <y>35</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OnEndButtonPress()</slot>
+  <slot>OnEndFieldModified(QString)</slot>
+  <slot>OnStartFieldModified(QString)</slot>
  </slots>
 </ui>

@@ -23,6 +23,7 @@ private slots:
 
 private:
 	TaskTrackerEntry* AddTaskEntry();
+	void UpdateTotalTime();
 
 	Ui::TaskTrackerClass ui;
 
