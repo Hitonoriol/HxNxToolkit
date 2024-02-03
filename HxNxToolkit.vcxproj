@@ -17,6 +17,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Util\Settings.cpp" />
     <ClCompile Include="UI\Component.cpp" />
     <ClCompile Include="General\BaseConverter.cpp" />
     <ClCompile Include="General\Calculator.cpp" />
@@ -77,6 +78,7 @@
     <QtMoc Include="Productivity\TaskTracker\TaskTrackerEntry.h" />
     <ClInclude Include="Enums\ToolType.h" />
     <QtMoc Include="UI\Component.h" />
+    <ClInclude Include="Util\Settings.h" />
     <ClInclude Include="Util\Time.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
