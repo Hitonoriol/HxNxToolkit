@@ -91,10 +91,17 @@
     <addaction name="ActionStopwatch"/>
     <addaction name="ActionTimer"/>
    </widget>
+   <widget class="QMenu" name="menuRandom">
+    <property name="title">
+     <string>Random</string>
+    </property>
+    <addaction name="ActionRandomNumber"/>
+   </widget>
    <addaction name="MenuFile"/>
    <addaction name="MenuGeneral"/>
    <addaction name="MenuProductivity"/>
    <addaction name="MenuTime"/>
+   <addaction name="menuRandom"/>
   </widget>
   <widget class="QToolBar" name="MainToolBar">
    <attribute name="toolBarArea">
@@ -153,6 +160,16 @@
   <action name="ActionSaveTab">
    <property name="text">
     <string>Save tab</string>
+   </property>
+  </action>
+  <action name="ActionRandomNumber">
+   <property name="text">
+    <string>Number</string>
+   </property>
+  </action>
+  <action name="ActionRandomString">
+   <property name="text">
+    <string>String</string>
    </property>
   </action>
  </widget>
@@ -319,6 +336,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionRandomNumber</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OpenRandomNumber()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
@@ -331,5 +364,6 @@
   <slot>SaveTabTriggered()</slot>
   <slot>LoadTabTriggered()</slot>
   <slot>OnTabClose(int)</slot>
+  <slot>OpenRandomNumber()</slot>
  </slots>
 </ui>
