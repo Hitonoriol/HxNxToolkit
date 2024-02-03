@@ -51,22 +51,75 @@ void TaskTrackerEntry::SetDescription(const QString& description)
 	ui.DescriptionField->setText(description);
 }
 
-void TaskTrackerEntry::OnEndButtonPress()
+QLineEdit* TaskTrackerEntry::GetEndField()
 {
-	auto time = QDateTime::fromString(ui.StartField->text(), "hh:mm");
-	auto startTime = time.toMSecsSinceEpoch()/*Time::Parse(ui.StartField->text()).GetTimeMs()*/;
-	auto endTime = Time::Now();
+	return ui.EndField;
+}
 
-	auto diff = endTime - startTime;
+QPushButton* TaskTrackerEntry::GetEndButton()
+{
+	return ui.EndButton;
+}
+
+void TaskTrackerEntry::OnEndFieldModified(QString newTime)
+{
+	if (ui.EndButton->isVisible()) {
+		return;
+	}
+
+	UpdateTime();
+
+	emit EndFieldModified(newTime);
+}
+
+void TaskTrackerEntry::OnStartFieldModified(QString newTime)
+{
+	if (ui.EndButton->isVisible()) {
+		return;
+	}
+
+	UpdateTime();
+
+	emit StartFieldModified(newTime);
+}
+
+void TaskTrackerEntry::UpdateTime(int64_t begin, int64_t end, bool updateEndField)
+{
+	auto diff = end - begin;
 	float hours = ((diff / 1000) % 86400) / 3600.0f;
 	if (diff <= 0) {
 		return;
 	}
 
-	ui.EndField->setText(QDateTime::fromMSecsSinceEpoch(endTime).toString("hh:mm"));
+	if (updateEndField) {
+		ui.EndField->setText(QDateTime::fromMSecsSinceEpoch(end).toString("hh:mm"));
+	}
+
 	ui.DurationField->setText(Time::GetTimeString(diff));
 	ui.DurationHoursField->setText(QString::number(hours, 'f', 2));
-	ui.EndButton->setVisible(false);
+}
 
+void TaskTrackerEntry::UpdateTime()
+{
+	try {
+		auto start = QDateTime::fromString(ui.StartField->text(), "hh:mm").toMSecsSinceEpoch();
+		auto end = QDateTime::fromString(ui.EndField->text(), "hh:mm").toMSecsSinceEpoch();
+		UpdateTime(start, end, false);
+	}
+	catch (...) {
+		ui.DurationField->setText("");
+		ui.DurationHoursField->setText("");
+	}
+}
+
+void TaskTrackerEntry::OnEndButtonPress()
+{
+	auto time = QDateTime::fromString(ui.StartField->text(), "hh:mm");
+	auto startTime = time.toMSecsSinceEpoch();
+	auto endTime = Time::Now();
+
+	UpdateTime(startTime, endTime);
+	ui.EndButton->setVisible(false);
+	ui.EndField->setReadOnly(false);
 	emit EndButtonPressed();
 }

@@ -3,6 +3,9 @@
 #include <QWidget>
 #include "ui_TaskTrackerEntry.h"
 
+#include <QPushButton>
+#include <QLineEdit>
+
 class TaskTrackerEntry : public QWidget
 {
 	Q_OBJECT
@@ -23,12 +26,22 @@ public:
 	QString GetDescription() const;
 	void SetDescription(const QString& description);
 
+	QLineEdit* GetEndField();
+	QPushButton* GetEndButton();
+
 signals:
 	void EndButtonPressed();
+	void EndFieldModified(QString newTime);
+	void StartFieldModified(QString newTime);
 
 private slots:
 	void OnEndButtonPress();
+	void OnEndFieldModified(QString newTime);
+	void OnStartFieldModified(QString newTime);
 
 private:
+	void UpdateTime(int64_t begin, int64_t end, bool updateEndField = true);
+	void UpdateTime();
+
 	Ui::TaskTrackerEntryClass ui;
 };
