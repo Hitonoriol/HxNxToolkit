@@ -1,6 +1,7 @@
 #include "TaskTracker.h"
 
 #include "TaskTrackerEntry.h"
+#include "Util/Time.h"
 
 #include <QJsonArray>
 
@@ -23,7 +24,7 @@ QJsonObject TaskTracker::SaveState()
 		entryObj["StartTime"] = entry->GetStartTime();
 		entryObj["EndTime"] = entry->GetEndTime();
 		entryObj["Description"] = entry->GetDescription();
-		entryObj["EndButton_visible"] = entry->GetEndButton()->isVisible();
+		entryObj["Finished"] = entry->IsFinished();
 		array.append(entryObj);
 	}
 	state["Tasks"] = array;
@@ -45,9 +46,9 @@ void TaskTracker::LoadState(const QJsonObject& state)
 		task->SetEndTime(taskObj["EndTime"].toString());
 		task->SetDescription(taskObj["Description"].toString());
 
-		bool finished = taskObj["EndButton_visible"].toBool();
+		bool finished = taskObj["Finished"].toBool();
 		task->GetEndButton()->setVisible(finished);
-		task->GetEndField()->setReadOnly(finished);
+		task->GetEndField()->setReadOnly(!finished);
 	}
 }
 
@@ -55,6 +56,7 @@ TaskTrackerEntry* TaskTracker::AddTaskEntry()
 {
 	auto nextEntry = new TaskTrackerEntry;
 	connect(nextEntry, &TaskTrackerEntry::EndButtonPressed, this, [this, nextEntry] {
+		UpdateTotalTime();
 		AddTaskEntry();
 	});
 
@@ -64,14 +66,38 @@ TaskTrackerEntry* TaskTracker::AddTaskEntry()
 		nextEntry->SetStartTime(lastEntry->GetEndTime());
 		nextEntry->SetNumber(lastEntry->GetNumber() + 1);
 		connect(lastEntry, &TaskTrackerEntry::EndFieldModified, this, [=](QString newTime) {
+			UpdateTotalTime();
 			nextEntry->SetStartTime(newTime);
 		});
 	}
 
 	lastEntry = nextEntry;
 
+	UpdateTotalTime();
 	emit Modified(this);
 	return nextEntry;
+}
+
+void TaskTracker::UpdateTotalTime()
+{
+	auto taskEntries = findChildren<TaskTrackerEntry*>();
+	if (taskEntries.isEmpty()) {
+		return;
+	}
+
+	int64_t totalDuration{};
+	for (auto entry : taskEntries) {
+		if (!entry->GetEndButton()->isVisible()) {
+			totalDuration += entry->GetDuration();
+		}
+	}
+
+	ui.TimeLabel->setText("Time spent: " + Time::GetTimeString(totalDuration));
+
+	auto lastEntry = taskEntries.last();
+	if (lastEntry && !lastEntry->IsFinished()) {
+		lastEntry->GetEndButton()->setVisible(Time::GetHours(totalDuration) < ui.SessionDurationBox->value());
+	}
 }
 
 void TaskTracker::OnStartSessionPress()

@@ -26,6 +26,11 @@ public:
 	QString GetDescription() const;
 	void SetDescription(const QString& description);
 
+	int64_t GetDuration();
+
+	bool IsFinished();
+	void SetFinished(bool value);
+
 	QLineEdit* GetEndField();
 	QPushButton* GetEndButton();
 
@@ -44,4 +49,5 @@ private:
 	void UpdateTime();
 
 	Ui::TaskTrackerEntryClass ui;
+	bool finished = false;
 };

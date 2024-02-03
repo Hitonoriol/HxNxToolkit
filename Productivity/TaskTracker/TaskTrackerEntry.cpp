@@ -24,6 +24,7 @@ uint64_t TaskTrackerEntry::GetNumber()
 void TaskTrackerEntry::SetStartTime(const QString& time)
 {
 	ui.StartField->setText(time);
+	UpdateTime();
 }
 
 QString TaskTrackerEntry::GetStartTime() const
@@ -34,6 +35,7 @@ QString TaskTrackerEntry::GetStartTime() const
 void TaskTrackerEntry::SetEndTime(const QString& time)
 {
 	ui.EndField->setText(time);
+	UpdateTime();
 }
 
 QString TaskTrackerEntry::GetEndTime() const
@@ -51,6 +53,30 @@ void TaskTrackerEntry::SetDescription(const QString& description)
 	ui.DescriptionField->setText(description);
 }
 
+int64_t TaskTrackerEntry::GetDuration()
+{
+	auto startTimeStr = ui.StartField->text();
+	auto endTimeStr = ui.EndField->text();
+
+	if (startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+		return 0;
+	}
+
+	auto start = QDateTime::fromString(startTimeStr, "hh:mm").toMSecsSinceEpoch();
+	auto end = QDateTime::fromString(endTimeStr, "hh:mm").toMSecsSinceEpoch();
+	return end - start;
+}
+
+bool TaskTrackerEntry::IsFinished()
+{
+	return finished;
+}
+
+void TaskTrackerEntry::SetFinished(bool value)
+{
+	finished = value;
+}
+
 QLineEdit* TaskTrackerEntry::GetEndField()
 {
 	return ui.EndField;
@@ -63,7 +89,7 @@ QPushButton* TaskTrackerEntry::GetEndButton()
 
 void TaskTrackerEntry::OnEndFieldModified(QString newTime)
 {
-	if (ui.EndButton->isVisible()) {
+	if (!finished) {
 		return;
 	}
 
@@ -74,7 +100,7 @@ void TaskTrackerEntry::OnEndFieldModified(QString newTime)
 
 void TaskTrackerEntry::OnStartFieldModified(QString newTime)
 {
-	if (ui.EndButton->isVisible()) {
+	if (!finished) {
 		return;
 	}
 
@@ -102,8 +128,14 @@ void TaskTrackerEntry::UpdateTime(int64_t begin, int64_t end, bool updateEndFiel
 void TaskTrackerEntry::UpdateTime()
 {
 	try {
-		auto start = QDateTime::fromString(ui.StartField->text(), "hh:mm").toMSecsSinceEpoch();
-		auto end = QDateTime::fromString(ui.EndField->text(), "hh:mm").toMSecsSinceEpoch();
+		auto startTimeStr = ui.StartField->text();
+		auto endTimeStr = ui.EndField->text();
+		if (startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+			return;
+		}
+
+		auto start = QDateTime::fromString(startTimeStr, "hh:mm").toMSecsSinceEpoch();
+		auto end = QDateTime::fromString(endTimeStr, "hh:mm").toMSecsSinceEpoch();
 		UpdateTime(start, end, false);
 	}
 	catch (...) {
@@ -118,6 +150,7 @@ void TaskTrackerEntry::OnEndButtonPress()
 	auto startTime = time.toMSecsSinceEpoch();
 	auto endTime = Time::Now();
 
+	finished = true;
 	UpdateTime(startTime, endTime);
 	ui.EndButton->setVisible(false);
 	ui.EndField->setReadOnly(false);
