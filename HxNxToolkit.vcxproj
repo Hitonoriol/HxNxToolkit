@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Random\RandomNumber.cpp" />
+    <ClCompile Include="Random\RandomString.cpp" />
     <ClCompile Include="Util\Settings.cpp" />
     <ClCompile Include="UI\Component.cpp" />
     <ClCompile Include="General\BaseConverter.cpp" />
@@ -45,6 +46,7 @@
     <QtUic Include="Productivity\TaskTracker\TaskTracker.ui" />
     <QtUic Include="Productivity\TaskTracker\TaskTrackerEntry.ui" />
     <QtUic Include="Random\RandomNumber.ui" />
+    <QtUic Include="Random\RandomString.ui" />
     <QtUic Include="Time\Stopwatch.ui" />
     <QtUic Include="Time\Timer.ui" />
     <QtUic Include="UI\Tab.ui" />
@@ -81,6 +83,7 @@
     <ClInclude Include="Enums\ToolType.h" />
     <QtMoc Include="UI\Component.h" />
     <QtMoc Include="Random\RandomNumber.h" />
+    <QtMoc Include="Random\RandomString.h" />
     <ClInclude Include="Util\Settings.h" />
     <ClInclude Include="Util\Time.h" />
   </ItemGroup>

@@ -17,5 +17,6 @@ enum class ToolType
 	Timer,
 
 	// Random
-	RandomNumber
+	RandomNumber,
+	RandomString
 };

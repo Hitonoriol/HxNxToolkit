@@ -96,6 +96,7 @@
      <string>Random</string>
     </property>
     <addaction name="ActionRandomNumber"/>
+    <addaction name="ActionRandomString"/>
    </widget>
    <addaction name="MenuFile"/>
    <addaction name="MenuGeneral"/>
@@ -352,6 +353,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionRandomString</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>OpenRandomString()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>OpenBaseConverter()</slot>
@@ -365,5 +382,6 @@
   <slot>LoadTabTriggered()</slot>
   <slot>OnTabClose(int)</slot>
   <slot>OpenRandomNumber()</slot>
+  <slot>OpenRandomString()</slot>
  </slots>
 </ui>

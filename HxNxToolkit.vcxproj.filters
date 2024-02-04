@@ -68,6 +68,9 @@
     <ClCompile Include="Random\RandomNumber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Random\RandomString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -106,6 +109,9 @@
     <QtMoc Include="Random\RandomNumber.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Random\RandomString.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -139,6 +145,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="Random\RandomNumber.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Random\RandomString.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

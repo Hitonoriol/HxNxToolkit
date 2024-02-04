@@ -51,6 +51,7 @@ public slots:
 
 	// Random
 	Component* OpenRandomNumber();
+	Component* OpenRandomString();
 
 private:
 	void SaveTab(int idx);
