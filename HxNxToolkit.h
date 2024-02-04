@@ -49,6 +49,10 @@ public slots:
 	Component* OpenStopwatch();
 	Component* OpenTimer();
 
+	// Random
+	Component* OpenRandomNumber();
+	Component* OpenRandomString();
+
 private:
 	void SaveTab(int idx);
 	void SaveTab();

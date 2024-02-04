@@ -14,5 +14,9 @@ enum class ToolType
 
 	// Time
 	Stopwatch,
-	Timer
+	Timer,
+
+	// Random
+	RandomNumber,
+	RandomString
 };

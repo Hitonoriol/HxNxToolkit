@@ -9,6 +9,9 @@
 #include "Time/Stopwatch.h"
 #include "Time/Timer.h"
 
+#include "Random/RandomNumber.h"
+#include "Random/RandomString.h"
+
 #include "UI/Tab.h"
 #include "Util/Settings.h"
 
@@ -66,6 +69,14 @@ void HxNxToolkit::LoadComponent(ToolType componentType, const QJsonObject& state
 
 	case ToolType::Timer:
 		component = OpenTimer();
+		break;
+
+	case ToolType::RandomNumber:
+		component = OpenRandomNumber();
+		break;
+
+	case ToolType::RandomString:
+		component = OpenRandomString();
 		break;
 
 	default:
@@ -186,6 +197,20 @@ Component* HxNxToolkit::OpenTimer()
 
 	GetCurrentTab()->AddComponent(timer, "Timer");
 	return timer;
+}
+
+Component* HxNxToolkit::OpenRandomNumber()
+{
+	auto rndNumber = new RandomNumber;
+	GetCurrentTab()->AddComponent(rndNumber, "Random number");
+	return rndNumber;
+}
+
+Component* HxNxToolkit::OpenRandomString()
+{
+	auto rndString = new RandomString;
+	GetCurrentTab()->AddComponent(rndString, "Random string");
+	return rndString;
 }
 
 Component* HxNxToolkit::OpenTaskTracker()
