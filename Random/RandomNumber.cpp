@@ -87,6 +87,10 @@ void RandomNumber::OnGenerateButtonPress()
 	{
 		auto min = ui.MinIntBox->value();
 		auto max = ui.MaxIntBox->value();
+		if (min >= max) {
+			return;
+		}
+
 		std::uniform_int_distribution distr(min, max);
 		for (size_t i = 0; i < nums; ++i) {
 			auto num = distr(rng);
@@ -99,6 +103,10 @@ void RandomNumber::OnGenerateButtonPress()
 	{
 		auto min = ui.MinDoubleBox->value();
 		auto max = ui.MaxDoubleBox->value();
+		if (min >= max) {
+			return;
+		}
+
 		std::uniform_real_distribution distr(min, max);
 		for (size_t i = 0; i < nums; ++i) {
 			auto num = distr(rng);
