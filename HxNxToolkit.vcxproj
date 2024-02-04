@@ -138,22 +138,34 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
   <PropertyGroup Label="QtDeploy" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtDeploy>true</QtDeploy>
+    <QtDeploy>false</QtDeploy>
     <QtDeployNoTranslations>true</QtDeployNoTranslations>
   </PropertyGroup>
   <PropertyGroup Label="QtDeploy" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtDeploy>true</QtDeploy>
+    <QtDeploy>false</QtDeploy>
     <QtDeployNoTranslations>true</QtDeployNoTranslations>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>"$(QtToolsPath)\windeployqt.exe" "$(OutDir)$(TargetFileName)" --no-translations --list target</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Invoke windeployqt</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>"$(QtToolsPath)\windeployqt.exe" "$(OutDir)$(TargetFileName)" --no-translations --list target</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Invoke windeployqt</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
