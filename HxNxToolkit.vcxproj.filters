@@ -71,6 +71,9 @@
     <ClCompile Include="Random\RandomString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ComponentFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Util\Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ComponentFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,19 +1,9 @@
 #include "HxNxToolkit.h"
 
-#include "General/BaseConverter.h"
-#include "General/Calculator.h"
-
-#include "Productivity/Checklist/Checklist.h"
-#include "Productivity/TaskTracker/TaskTracker.h"
-
-#include "Time/Stopwatch.h"
-#include "Time/Timer.h"
-
-#include "Random/RandomNumber.h"
-#include "Random/RandomString.h"
-
 #include "UI/Tab.h"
+#include "UI/ComponentFactory.h"
 #include "Util/Settings.h"
+#include "Util/Time.h"
 
 #include <QDateTime>
 #include <QMessageBox>
@@ -29,6 +19,7 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	ComponentFactory::Register(this);
 	NewTab();
 
 	auto lastSaveDir = Settings::GetString(Settings::LastSaveDir);
@@ -45,45 +36,7 @@ HxNxToolkit::~HxNxToolkit()
 
 void HxNxToolkit::LoadComponent(ToolType componentType, const QJsonObject& state)
 {
-	Component* component{};
-	switch (componentType) {
-	case ToolType::BaseConverter:
-		component = OpenBaseConverter();
-		break;
-
-	case ToolType::Calculator:
-		component = OpenCalculator();
-		break;
-
-	case ToolType::Checklist:
-		component = OpenChecklist();
-		break;
-
-	case ToolType::TaskTracker:
-		component = OpenTaskTracker();
-		break;
-
-	case ToolType::Stopwatch:
-		component = OpenStopwatch();
-		break;
-
-	case ToolType::Timer:
-		component = OpenTimer();
-		break;
-
-	case ToolType::RandomNumber:
-		component = OpenRandomNumber();
-		break;
-
-	case ToolType::RandomString:
-		component = OpenRandomString();
-		break;
-
-	default:
-		break;
-	}
-
-	if (component) {
+	if (auto component = ComponentFactory::CreateComponent(this, componentType)) {
 		component->LoadState(state);
 	}
 }
@@ -103,6 +56,27 @@ Tab* HxNxToolkit::NewTab()
 Tab* HxNxToolkit::GetCurrentTab()
 {
 	return dynamic_cast<Tab*>(ui.Tabs->currentWidget());
+}
+
+QAction* HxNxToolkit::AddComponentMenuAction(const QString& categoryName, const QString& componentName)
+{
+	auto menus = ui.MenuBar->findChildren<QMenu*>();
+	auto categoryIt = std::find_if(menus.begin(), menus.end(), [=](QMenu* menu) {
+		return menu->title() == categoryName;
+	});
+
+	QMenu* category{};
+	if (categoryIt == menus.end()) {
+		category = new QMenu(categoryName, ui.MenuBar);
+		category->setObjectName(categoryName);
+		ui.MenuBar->addMenu(category);
+	} else {
+		category = *categoryIt;
+	}
+
+	auto componentAction = new QAction(componentName, category);
+	category->addAction(componentAction);
+	return componentAction;
 }
 
 void HxNxToolkit::NewTabTriggered()
@@ -149,75 +123,6 @@ void HxNxToolkit::SaveTabTriggered()
 void HxNxToolkit::LoadTabTriggered()
 {
 	LoadTab();
-}
-
-Component* HxNxToolkit::OpenBaseConverter()
-{
-	auto converter = new BaseConverter;
-	GetCurrentTab()->AddComponent(converter, "Base converter");
-	return converter;
-}
-
-Component* HxNxToolkit::OpenCalculator()
-{
-	auto calculator = new Calculator;
-	GetCurrentTab()->AddComponent(calculator, "Calculator");
-	return calculator;
-}
-
-Component* HxNxToolkit::OpenChecklist()
-{
-	auto checklist = new Checklist;
-	GetCurrentTab()->AddComponent(checklist, "Checklist");
-	return checklist;
-}
-
-Component* HxNxToolkit::OpenStopwatch()
-{
-	auto stopwatch = new Stopwatch;
-	GetCurrentTab()->AddComponent(stopwatch, "Stopwatch");
-	return stopwatch;
-}
-
-Component* HxNxToolkit::OpenTimer()
-{
-	auto timer = new Timer;
-	connect(timer, &Timer::TimerCompleted, this, [this](int64_t startTime, Time duration) {
-		setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
-		activateWindow();
-
-		auto durationStr = Time::GetTimeString(duration.GetTimeMs());
-		auto startTimeStr = Time::GetTimeString(QDateTime::fromMSecsSinceEpoch(startTime));
-		auto notification = new QMessageBox(this);
-		notification->setWindowTitle("Timer");
-		notification->setText("Timer has completed!");
-		notification->setInformativeText(QString("Duration: %1\nStarted at: %2").arg(durationStr).arg(startTimeStr));
-		notification->show();
-	});
-
-	GetCurrentTab()->AddComponent(timer, "Timer");
-	return timer;
-}
-
-Component* HxNxToolkit::OpenRandomNumber()
-{
-	auto rndNumber = new RandomNumber;
-	GetCurrentTab()->AddComponent(rndNumber, "Random number");
-	return rndNumber;
-}
-
-Component* HxNxToolkit::OpenRandomString()
-{
-	auto rndString = new RandomString;
-	GetCurrentTab()->AddComponent(rndString, "Random string");
-	return rndString;
-}
-
-Component* HxNxToolkit::OpenTaskTracker()
-{
-	auto taskTracker = new TaskTracker;
-	GetCurrentTab()->AddComponent(taskTracker, "Task tracker");
-	return taskTracker;
 }
 
 void HxNxToolkit::SaveTab(int idx)

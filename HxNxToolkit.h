@@ -21,6 +21,8 @@ public:
 	Tab* NewTab();
 	Tab* GetCurrentTab();
 
+	QAction* AddComponentMenuAction(const QString& categoryName, const QString& componentName);
+
 	using Tool = ToolType;
 	Q_ENUM(Tool)
 
@@ -36,22 +38,6 @@ public slots:
 	void LoadTabTriggered();
 
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
-
-	// General
-	Component* OpenBaseConverter();
-	Component* OpenCalculator();
-
-	// Productivity
-	Component* OpenChecklist();
-	Component* OpenTaskTracker();
-
-	// Time
-	Component* OpenStopwatch();
-	Component* OpenTimer();
-
-	// Random
-	Component* OpenRandomNumber();
-	Component* OpenRandomString();
 
 private:
 	void SaveTab(int idx);

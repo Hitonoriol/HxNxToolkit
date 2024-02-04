@@ -70,39 +70,7 @@
     <addaction name="ActionLoadTab"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="MenuGeneral">
-    <property name="title">
-     <string>General</string>
-    </property>
-    <addaction name="ActionBaseConverter"/>
-    <addaction name="ActionCalculator"/>
-   </widget>
-   <widget class="QMenu" name="MenuProductivity">
-    <property name="title">
-     <string>Productivity</string>
-    </property>
-    <addaction name="ActionChecklist"/>
-    <addaction name="ActionTaskTracker"/>
-   </widget>
-   <widget class="QMenu" name="MenuTime">
-    <property name="title">
-     <string>Time</string>
-    </property>
-    <addaction name="ActionStopwatch"/>
-    <addaction name="ActionTimer"/>
-   </widget>
-   <widget class="QMenu" name="menuRandom">
-    <property name="title">
-     <string>Random</string>
-    </property>
-    <addaction name="ActionRandomNumber"/>
-    <addaction name="ActionRandomString"/>
-   </widget>
    <addaction name="MenuFile"/>
-   <addaction name="MenuGeneral"/>
-   <addaction name="MenuProductivity"/>
-   <addaction name="MenuTime"/>
-   <addaction name="menuRandom"/>
   </widget>
   <widget class="QToolBar" name="MainToolBar">
    <attribute name="toolBarArea">
@@ -178,106 +146,10 @@
  <resources/>
  <connections>
   <connection>
-   <sender>ActionBaseConverter</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenBaseConverter()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionCalculator</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenCalculator()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ActionNewTab</sender>
    <signal>triggered()</signal>
    <receiver>HxNxToolkitClass</receiver>
    <slot>NewTabTriggered()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionChecklist</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenChecklist()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionStopwatch</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenStopwatch()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionTimer</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenTimer()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionTaskTracker</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenTaskTracker()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -330,38 +202,6 @@
     <hint type="sourcelabel">
      <x>299</x>
      <y>206</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionRandomNumber</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenRandomNumber()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ActionRandomString</sender>
-   <signal>triggered()</signal>
-   <receiver>HxNxToolkitClass</receiver>
-   <slot>OpenRandomString()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>299</x>
