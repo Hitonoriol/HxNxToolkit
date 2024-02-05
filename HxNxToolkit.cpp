@@ -36,7 +36,9 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	connect(closeAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 	trayMenu->addAction(closeAction);
 
-	trayIcon = new QSystemTrayIcon(QIcon(":/icons/icon-tray.ico"), this);
+	QIcon icon(":/icons/icon-app.ico");
+	setWindowIcon(icon);
+	trayIcon = new QSystemTrayIcon(icon, this);
 	trayIcon->show();
 	trayIcon->setContextMenu(trayMenu);
 	connect(trayIcon, &QSystemTrayIcon::activated, this, &HxNxToolkit::IconActivated);

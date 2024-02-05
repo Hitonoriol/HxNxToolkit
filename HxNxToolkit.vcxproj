@@ -82,6 +82,7 @@
     <QtMoc Include="Productivity\TaskTracker\TaskTracker.h" />
     <QtMoc Include="Productivity\TaskTracker\TaskTrackerEntry.h" />
     <ClInclude Include="JSON\Serialization.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="UI\ComponentFactory.h" />
     <ClInclude Include="Enums\ToolType.h" />
     <QtMoc Include="UI\Component.h" />
@@ -92,6 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Assets\Resources.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HxNxToolkit.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\icon-app.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0938D542-A05A-4FB9-B039-F70D06518687}</ProjectGuid>
