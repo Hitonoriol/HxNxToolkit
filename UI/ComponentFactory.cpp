@@ -28,6 +28,10 @@ std::map<ToolType, ComponentSupplierEntry> ComponentFactory::componentSuppliers{
 	{ToolType::Timer, {"Time", "Timer", [](HxNxToolkit* toolkit, const QString& name) -> Component* {
 		auto timer = new Timer;
 		toolkit->connect(timer, &Timer::TimerCompleted, toolkit, [toolkit](int64_t startTime, Time duration) {
+			if (!toolkit->isVisible()) {
+				toolkit->setVisible(true);
+			}
+
 			toolkit->setWindowState(toolkit->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
 			toolkit->activateWindow();
 
