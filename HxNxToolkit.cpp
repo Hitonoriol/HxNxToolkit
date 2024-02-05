@@ -245,4 +245,5 @@ void HxNxToolkit::LoadTab()
 	auto tabObject = tabDoc.object();
 	ui.Tabs->setTabText(ui.Tabs->currentIndex(), tabObject["Title"].toString());
 	tab->LoadState(tabObject);
+	tab->SetSavePath(tabPath);
 }
