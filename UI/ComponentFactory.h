@@ -1,6 +1,7 @@
 #pragma once
 #include "Enums/ToolType.h"
 #include "UI/Component.h"
+#include "UI/Tab.h"
 #include "HxNxToolkit.h"
 
 #include <QString>
@@ -38,7 +39,12 @@ private:
 	{
 		return [&](HxNxToolkit* toolkit, const QString& name) {
 			auto component = new C;
-			toolkit->GetCurrentTab()->AddComponent(component, name);
+			auto tab = toolkit->GetCurrentTab();
+			if (!tab) {
+				tab = toolkit->NewTab();
+			}
+
+			tab->AddComponent(component, name);
 			return component;
 		};
 	}

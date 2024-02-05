@@ -44,7 +44,12 @@ std::map<ToolType, ComponentSupplierEntry> ComponentFactory::componentSuppliers{
 			notification->show();
 		});
 
-		toolkit->GetCurrentTab()->AddComponent(timer, name);
+		auto tab = toolkit->GetCurrentTab();
+		if (!tab) {
+			tab = toolkit->NewTab();
+		}
+
+		tab->AddComponent(timer, name);
 		return timer;
 	}}},
 
