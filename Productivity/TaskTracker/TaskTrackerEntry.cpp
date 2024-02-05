@@ -109,6 +109,11 @@ void TaskTrackerEntry::OnStartFieldModified(QString newTime)
 	emit StartFieldModified(newTime);
 }
 
+void TaskTrackerEntry::OnDescriptionFieldModified(QString newDescription)
+{
+	emit DescriptionFieldModified(newDescription);
+}
+
 void TaskTrackerEntry::UpdateTime(int64_t begin, int64_t end, bool updateEndField)
 {
 	auto diff = end - begin;

@@ -60,13 +60,20 @@ TaskTrackerEntry* TaskTracker::AddTaskEntry()
 		AddTaskEntry();
 	});
 
+	auto modifiedHandler = [=](auto) {
+		UpdateTotalTime();
+		emit Modified(this);
+	};
+	connect(nextEntry, &TaskTrackerEntry::EndFieldModified, this, modifiedHandler);
+	connect(nextEntry, &TaskTrackerEntry::StartFieldModified, this, modifiedHandler);
+	connect(nextEntry, &TaskTrackerEntry::DescriptionFieldModified, this, modifiedHandler);
+
 	ui.TaskContainer->addWidget(nextEntry);
 
 	if (lastEntry) {
 		nextEntry->SetStartTime(lastEntry->GetEndTime());
 		nextEntry->SetNumber(lastEntry->GetNumber() + 1);
 		connect(lastEntry, &TaskTrackerEntry::EndFieldModified, this, [=](QString newTime) {
-			UpdateTotalTime();
 			nextEntry->SetStartTime(newTime);
 		});
 	}

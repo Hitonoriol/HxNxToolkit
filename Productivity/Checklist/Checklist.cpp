@@ -49,6 +49,9 @@ ChecklistEntry* Checklist::AddEntry()
 	layout->addWidget(entry);
 	layout->addWidget(ui.AddEntryButton);
 
+	connect(entry, &ChecklistEntry::CheckboxValueChanged, this, [this] { emit Modified(this); });
+	connect(entry, &ChecklistEntry::DescriptionChanged, this, [this]{ emit Modified(this); });
+
 	emit Modified(this);
 	return entry;
 }

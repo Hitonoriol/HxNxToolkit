@@ -38,11 +38,13 @@ signals:
 	void EndButtonPressed();
 	void EndFieldModified(QString newTime);
 	void StartFieldModified(QString newTime);
+	void DescriptionFieldModified(QString newDescription);
 
 private slots:
 	void OnEndButtonPress();
 	void OnEndFieldModified(QString newTime);
 	void OnStartFieldModified(QString newTime);
+	void OnDescriptionFieldModified(QString newDescription);
 
 private:
 	void UpdateTime(int64_t begin, int64_t end, bool updateEndField = true);
