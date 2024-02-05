@@ -1,4 +1,5 @@
 #include "BaseConverter.h"
+#include "JSON/Serialization.h"
 
 #include <QMetaEnum>
 #include <string>
@@ -23,19 +24,23 @@ BaseConverter::~BaseConverter()
 QJsonObject BaseConverter::SaveState()
 {
 	auto state = Component::SaveState();
-	state["InputBase"] = ui.InputBaseSelector->currentIndex();
-	state["OutputBase"] = ui.OutputBaseSelector->currentIndex();
-	state["InputValue"] = ui.InputField->text();
-	state["OutputValue"] = ui.OutputField->text();
+	HX_JSON_SCOPE(state,
+		HX_SERIALIZE(ui.InputBaseSelector, currentIndex);
+	    HX_SERIALIZE(ui.OutputBaseSelector, currentIndex);
+		HX_SERIALIZE(ui.InputField, text);
+		HX_SERIALIZE(ui.OutputField, text);
+	)
 	return state;
 }
 
 void BaseConverter::LoadState(const QJsonObject& state)
 {
-	ui.InputBaseSelector->setCurrentIndex(state["InputBase"].toInt());
-	ui.OutputBaseSelector->setCurrentIndex(state["OutputBase"].toInt());
-	ui.InputField->setText(state["InputValue"].toString());
-	ui.OutputField->setText(state["OutputValue"].toString());
+	HX_JSON_SCOPE(state,
+		HX_DESERIALIZE(ui.InputBaseSelector, setCurrentIndex, toInt);
+	    HX_DESERIALIZE(ui.OutputBaseSelector, setCurrentIndex, toInt);
+	    HX_DESERIALIZE(ui.InputField, setText, toString);
+	    HX_DESERIALIZE(ui.OutputField, setText, toString);
+	)
 }
 
 void BaseConverter::InputTextChanged(QString text)

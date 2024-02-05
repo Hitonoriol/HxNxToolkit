@@ -1,4 +1,5 @@
 #include "Calculator.h"
+#include "JSON/Serialization.h"
 
 #include <tinyexpr/tinyexpr.h>
 
@@ -14,15 +15,19 @@ Calculator::~Calculator()
 QJsonObject Calculator::SaveState()
 {
 	auto state = Component::SaveState();
-	state["Expression"] = ui.InputField->text();
-	state["Result"] = ui.OutputField->text();
+	HX_JSON_SCOPE(state,
+		HX_SERIALIZE(ui.InputField, text);
+	    HX_SERIALIZE(ui.OutputField, text);
+	)
 	return state;
 }
 
 void Calculator::LoadState(const QJsonObject& state)
 {
-	ui.InputField->setText(state["Expression"].toString());
-	ui.OutputField->setText(state["Result"].toString());
+	HX_JSON_SCOPE(state,
+		HX_DESERIALIZE(ui.InputField, setText, toString);
+	    HX_DESERIALIZE(ui.OutputField, setText, toString);
+	)
 }
 
 void Calculator::InputTextChanged(QString text)

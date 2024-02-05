@@ -1,4 +1,5 @@
 #include "RandomNumber.h"
+#include "JSON/Serialization.h"
 
 #include <QMetaEnum>
 
@@ -25,25 +26,29 @@ RandomNumber::~RandomNumber()
 QJsonObject RandomNumber::SaveState()
 {
 	auto state = Component::SaveState();
-	state["MinInt"] = ui.MinIntBox->value();
-	state["MaxInt"] = ui.MaxIntBox->value();
-	state["MinDouble"] = ui.MinDoubleBox->value();
-	state["MaxDouble"] = ui.MaxDoubleBox->value();
-	state["NumberCount"] = ui.NumberCountBox->value();
-	state["NumberType"] = ui.NumberTypeBox->currentIndex();
-	state["Output"] = ui.OutputField->toPlainText();
+	HX_JSON_SCOPE(state,
+	    HX_SERIALIZE(ui.MinIntBox, value);
+	    HX_SERIALIZE(ui.MaxIntBox, value);
+		HX_SERIALIZE(ui.MinDoubleBox, value);
+		HX_SERIALIZE(ui.MaxDoubleBox, value);
+		HX_SERIALIZE(ui.NumberCountBox, value);
+		HX_SERIALIZE(ui.NumberTypeBox, currentIndex);
+		HX_SERIALIZE(ui.OutputField, toPlainText);
+	)
 	return state;
 }
 
 void RandomNumber::LoadState(const QJsonObject& state)
 {
-	ui.MinIntBox->setValue(state["MinInt"].toInt());
-	ui.MaxIntBox->setValue(state["MaxInt"].toInt());
-	ui.MinDoubleBox->setValue(state["MinDouble"].toDouble());
-	ui.MaxDoubleBox->setValue(state["MaxDouble"].toDouble());
-	ui.NumberCountBox->setValue(state["NumberCount"].toInt());
-	ui.NumberTypeBox->setCurrentIndex(state["NumberType"].toInt());
-	ui.OutputField->setPlainText(state["Output"].toString());
+	HX_JSON_SCOPE(state,
+	    HX_DESERIALIZE(ui.MinIntBox, setValue, toInt);
+	    HX_DESERIALIZE(ui.MaxIntBox, setValue, toInt);
+	    HX_DESERIALIZE(ui.MinDoubleBox, setValue, toDouble);
+	    HX_DESERIALIZE(ui.MaxDoubleBox, setValue, toDouble);
+	    HX_DESERIALIZE(ui.NumberCountBox, setValue, toInt);
+	    HX_DESERIALIZE(ui.NumberTypeBox, setCurrentIndex, toInt);
+	    HX_DESERIALIZE(ui.OutputField, setPlainText, toString);
+	)
 }
 
 RandomNumber::NumberType RandomNumber::GetSelectedNumberType()

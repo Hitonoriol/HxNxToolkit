@@ -1,6 +1,7 @@
 #include "Timer.h"
 
 #include "Util/Time.h"
+#include "JSON/Serialization.h"
 
 Timer::Timer(QWidget *parent)
 	: Component(parent, ToolType::Timer)
@@ -15,17 +16,21 @@ Timer::~Timer()
 QJsonObject Timer::SaveState()
 {
 	auto state = Component::SaveState();
-	state["HourBox"] = ui.HourBox->value();
-	state["MinuteBox"] = ui.MinuteBox->value();
-	state["SecondBox"] = ui.SecondBox->value();
+	HX_JSON_SCOPE(state,
+		HX_SERIALIZE(ui.HourBox, value);
+	    HX_SERIALIZE(ui.MinuteBox, value);
+		HX_SERIALIZE(ui.SecondBox, value);
+	)
 	return state;
 }
 
 void Timer::LoadState(const QJsonObject& state)
 {
-	ui.HourBox->setValue(state["HourBox"].toInt());
-	ui.MinuteBox->setValue(state["MinuteBox"].toInt());
-	ui.SecondBox->setValue(state["SecondBox"].toInt());
+	HX_JSON_SCOPE(state,
+		HX_DESERIALIZE(ui.HourBox, setValue, toInt);
+	    HX_DESERIALIZE(ui.MinuteBox, setValue, toInt);
+		HX_DESERIALIZE(ui.SecondBox, setValue, toInt);
+	)
 }
 
 void Timer::OnStartButtonPress()

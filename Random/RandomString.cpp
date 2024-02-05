@@ -1,4 +1,5 @@
 #include "RandomString.h"
+#include "JSON/Serialization.h"
 
 RandomString::RandomString(QWidget *parent)
 	: Component(parent, ToolType::RandomString)
@@ -12,19 +13,23 @@ RandomString::~RandomString()
 QJsonObject RandomString::SaveState()
 {
 	auto state = Component::SaveState();
-	state["CharacterSet"] = ui.CharacterSetField->text();
-	state["Length"] = ui.LengthBox->value();
-	state["StringNumber"] = ui.StringNumberBox->value();
-	state["Output"] = ui.OutputField->toPlainText();
+	HX_JSON_SCOPE(state,
+		HX_SERIALIZE(ui.CharacterSetField, text);
+	    HX_SERIALIZE(ui.LengthBox, value);
+		HX_SERIALIZE(ui.StringNumberBox, value);
+		HX_SERIALIZE(ui.OutputField, toPlainText);
+	)
 	return state;
 }
 
 void RandomString::LoadState(const QJsonObject& state)
 {
-	ui.CharacterSetField->setText(state["CharacterSet"].toString());
-	ui.LengthBox->setValue(state["Length"].toInt());
-	ui.StringNumberBox->setValue(state["StringNumber"].toInt());
-	ui.OutputField->setPlainText(state["Output"].toString());
+	HX_JSON_SCOPE(state,
+		HX_DESERIALIZE(ui.CharacterSetField, setText, toString);
+	    HX_DESERIALIZE(ui.LengthBox, setValue, toInt);
+	    HX_DESERIALIZE(ui.StringNumberBox, setValue, toInt);
+	    HX_DESERIALIZE(ui.OutputField, setPlainText, toString);
+	)
 }
 
 void RandomString::OnGenerateButtonPress()
