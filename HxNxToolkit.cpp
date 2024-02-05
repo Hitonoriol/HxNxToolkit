@@ -32,8 +32,9 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	autosaveTimer.start(std::chrono::milliseconds{60'000});
 
 	trayMenu = new QMenu(this);
-	auto closeAction = new QAction("&Close", this);
+	auto closeAction = new QAction("&Quit", this);
 	connect(closeAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+	connect(ui.ActionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
 	trayMenu->addAction(closeAction);
 
 	QIcon icon(":/icons/icon-app.ico");

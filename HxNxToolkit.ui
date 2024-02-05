@@ -70,6 +70,7 @@
     <addaction name="ActionSaveTab"/>
     <addaction name="ActionLoadTab"/>
     <addaction name="separator"/>
+    <addaction name="ActionQuit"/>
    </widget>
    <addaction name="MenuFile"/>
   </widget>
@@ -157,6 +158,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="ActionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Q</string>
    </property>
   </action>
  </widget>
