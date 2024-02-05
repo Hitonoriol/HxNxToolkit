@@ -65,6 +65,7 @@
      <string>File</string>
     </property>
     <addaction name="ActionNewTab"/>
+    <addaction name="ActionCloseTab"/>
     <addaction name="separator"/>
     <addaction name="ActionSaveTab"/>
     <addaction name="ActionLoadTab"/>
@@ -94,6 +95,9 @@
   <action name="ActionNewTab">
    <property name="text">
     <string>New tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="ActionChecklist">
@@ -125,10 +129,16 @@
    <property name="text">
     <string>Load tab</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="ActionSaveTab">
    <property name="text">
     <string>Save tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="ActionRandomNumber">
@@ -139,6 +149,14 @@
   <action name="ActionRandomString">
    <property name="text">
     <string>String</string>
+   </property>
+  </action>
+  <action name="ActionCloseTab">
+   <property name="text">
+    <string>Close tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
  </widget>
@@ -209,19 +227,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionCloseTab</sender>
+   <signal>triggered()</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>CloseTabTriggered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>OpenBaseConverter()</slot>
-  <slot>OpenCalculator()</slot>
   <slot>NewTabTriggered()</slot>
-  <slot>OpenChecklist()</slot>
-  <slot>OpenStopwatch()</slot>
-  <slot>OpenTimer()</slot>
-  <slot>OpenTaskTracker()</slot>
   <slot>SaveTabTriggered()</slot>
   <slot>LoadTabTriggered()</slot>
   <slot>OnTabClose(int)</slot>
-  <slot>OpenRandomNumber()</slot>
-  <slot>OpenRandomString()</slot>
+  <slot>CloseTabTriggered()</slot>
  </slots>
 </ui>

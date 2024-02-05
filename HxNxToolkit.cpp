@@ -165,6 +165,11 @@ void HxNxToolkit::LoadTabTriggered()
 	LoadTab();
 }
 
+void HxNxToolkit::CloseTabTriggered()
+{
+	ui.Tabs->removeTab(ui.Tabs->currentIndex());
+}
+
 void HxNxToolkit::SaveTab(int idx)
 {
 	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));

@@ -42,6 +42,7 @@ public slots:
 
 	void SaveTabTriggered();
 	void LoadTabTriggered();
+	void CloseTabTriggered();
 
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
 
