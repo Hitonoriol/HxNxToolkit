@@ -14,6 +14,7 @@
 #include <QFileDialog>
 #include <QByteArray>
 #include <QRegularExpression>
+#include <QCloseEvent>
 
 HxNxToolkit::HxNxToolkit(QWidget *parent)
 	: QMainWindow(parent)
@@ -29,10 +30,28 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 
 	connect(&autosaveTimer, &QTimer::timeout, this, &HxNxToolkit::Autosave);
 	autosaveTimer.start(std::chrono::milliseconds{60'000});
+
+	trayMenu = new QMenu(this);
+	auto closeAction = new QAction("&Close", this);
+	connect(closeAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+	trayMenu->addAction(closeAction);
+
+	trayIcon = new QSystemTrayIcon(QIcon(":/icons/icon-tray.ico"), this);
+	trayIcon->show();
+	trayIcon->setContextMenu(trayMenu);
+	connect(trayIcon, &QSystemTrayIcon::activated, this, &HxNxToolkit::IconActivated);
 }
 
 HxNxToolkit::~HxNxToolkit()
 {}
+
+void HxNxToolkit::IconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	bool visible = this->isVisible();
+	if (reason == QSystemTrayIcon::ActivationReason::DoubleClick) {
+		this->setVisible(!visible);
+	}
+}
 
 void HxNxToolkit::LoadComponent(ToolType componentType, const QJsonObject& state)
 {
@@ -82,6 +101,27 @@ QAction* HxNxToolkit::AddComponentMenuAction(const QString& categoryName, const 
 void HxNxToolkit::NewTabTriggered()
 {
 	NewTab();
+}
+
+void HxNxToolkit::closeEvent(QCloseEvent* event)
+{
+	if (trayIcon->isVisible()) {
+		hide();
+		event->ignore();
+	}
+}
+
+void HxNxToolkit::changeEvent(QEvent* event)
+{
+	switch (event->type()) {
+	case QEvent::WindowStateChange:
+		if (isMinimized()) {
+			hide();
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void HxNxToolkit::OnTabClose(int idx)

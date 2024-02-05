@@ -6,6 +6,8 @@
 #include "Enums/ToolType.h"
 
 #include <QTimer>
+#include <QSystemTrayIcon>
+#include <QMenu>
 
 class Tab;
 class Component;
@@ -26,6 +28,10 @@ public:
 	using Tool = ToolType;
 	Q_ENUM(Tool)
 
+protected:
+	virtual void closeEvent(QCloseEvent* event) override;
+	virtual void changeEvent(QEvent* event) override;
+
 public slots:
 	void NewTabTriggered();
 	void OnTabClose(int idx);
@@ -39,12 +45,19 @@ public slots:
 
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
 
+private slots:
+	void IconActivated(QSystemTrayIcon::ActivationReason reason);
+
 private:
 	void SaveTab(int idx);
 	void SaveTab();
 	void LoadTab();
 
 	Ui::HxNxToolkitClass ui;
+
+	QSystemTrayIcon* trayIcon;
+	QMenu* trayMenu;
+
 	QTimer autosaveTimer;
 	int curTabIdx{};
 };
