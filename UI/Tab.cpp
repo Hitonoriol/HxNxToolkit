@@ -45,6 +45,7 @@ void Tab::AddComponent(Component* component, const QString& title)
 	scrollLayout->addItem(ui.BottomSpacer);
 
 	connect(component, &Component::Modified, this, &Tab::ComponentModified);
+	emit ComponentModified(nullptr);
 }
 
 QJsonObject Tab::SaveState()
@@ -57,8 +58,10 @@ QJsonObject Tab::SaveState()
 		arr.append(component->SaveState());
 	}
 	state["Components"] = arr;
+
 	emit TabSaved(this);
 	modified = false;
+
 	return state;
 }
 
@@ -70,6 +73,9 @@ void Tab::LoadState(const QJsonObject& state)
 		auto componentType = static_cast<ToolType>(componentObj["Type"].toInt());
 		emit LoadComponent(componentType, componentObj);
 	}
+
+	emit TabSaved(this);
+	modified = false;
 }
 
 bool Tab::IsModified()
