@@ -89,23 +89,13 @@ QPushButton* TaskTrackerEntry::GetEndButton()
 
 void TaskTrackerEntry::OnEndFieldModified(QString newTime)
 {
-	if (!finished) {
-		return;
-	}
-
 	UpdateTime();
-
 	emit EndFieldModified(newTime);
 }
 
 void TaskTrackerEntry::OnStartFieldModified(QString newTime)
 {
-	if (!finished) {
-		return;
-	}
-
 	UpdateTime();
-
 	emit StartFieldModified(newTime);
 }
 
