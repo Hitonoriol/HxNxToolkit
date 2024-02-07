@@ -33,8 +33,8 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 
 	trayMenu = new QMenu(this);
 	auto closeAction = new QAction("&Quit", this);
-	connect(closeAction, &QAction::triggered, qApp, &QCoreApplication::quit);
-	connect(ui.ActionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
+	connect(closeAction, &QAction::triggered, this, &HxNxToolkit::Quit);
+	connect(ui.ActionQuit, &QAction::triggered, this, &HxNxToolkit::Quit);
 	trayMenu->addAction(closeAction);
 
 	QIcon icon(":/icons/icon-app.ico");
@@ -129,6 +129,29 @@ void HxNxToolkit::changeEvent(QEvent* event)
 
 void HxNxToolkit::OnTabClose(int idx)
 {
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
+	if (tab && tab->IsModified()) {
+		auto result = QMessageBox::question(
+			this, "Closing \"" + ui.Tabs->tabText(idx) + "\"",
+			"This tab has unsaved changes. Save now?",
+			QMessageBox::StandardButton::Yes | QMessageBox::StandardButton::No | QMessageBox::StandardButton::Cancel
+		);
+
+		switch (result) {
+		case QMessageBox::StandardButton::Cancel:
+			return;
+
+		case QMessageBox::StandardButton::Yes:
+			if (!SaveTab(idx)) {
+				return;
+			}
+			break;
+
+		default:
+			break;
+		} 
+	}
+
 	ui.Tabs->removeTab(idx);
 }
 
@@ -173,7 +196,7 @@ void HxNxToolkit::CloseTabTriggered()
 	ui.Tabs->removeTab(ui.Tabs->currentIndex());
 }
 
-void HxNxToolkit::SaveTab(int idx)
+bool HxNxToolkit::SaveTab(int idx)
 {
 	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
 	auto tabJson = tab->SaveState();
@@ -200,7 +223,7 @@ void HxNxToolkit::SaveTab(int idx)
 
 		auto newPath = files.isEmpty() ? QString("") : files.first();
 		if (!result || newPath.isEmpty()) {
-			return;
+			return false;
 		}
 
 		savePath = newPath;
@@ -212,18 +235,19 @@ void HxNxToolkit::SaveTab(int idx)
 
 	if (!saveFile.open(QFile::WriteOnly)) {
 		tab->SetSavePath("");
-		return;
+		return false;
 	}
 
 	saveFile.write(doc.toJson());
 	Settings::SetString(Settings::LastSaveDir, savePath);
 	saveFile.close();
+	return true;
 }
 
-void HxNxToolkit::SaveTab()
+bool HxNxToolkit::SaveTab()
 {
 	auto currentTab = ui.Tabs->currentIndex();
-	SaveTab(currentTab);
+	return SaveTab(currentTab);
 }
 
 void HxNxToolkit::LoadTab()
@@ -254,4 +278,13 @@ void HxNxToolkit::LoadTab()
 	ui.Tabs->setTabText(ui.Tabs->currentIndex(), tabObject["Title"].toString());
 	tab->LoadState(tabObject);
 	tab->SetSavePath(tabPath);
+}
+
+void HxNxToolkit::Quit()
+{
+	for (size_t i = 0; i < ui.Tabs->count(); ++i) {
+		OnTabClose(i);
+	}
+
+	QApplication::quit();
 }

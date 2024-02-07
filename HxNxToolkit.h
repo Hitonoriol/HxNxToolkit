@@ -50,9 +50,11 @@ private slots:
 	void IconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
-	void SaveTab(int idx);
-	void SaveTab();
+	bool SaveTab(int idx);
+	bool SaveTab();
 	void LoadTab();
+
+	void Quit();
 
 	Ui::HxNxToolkitClass ui;
 
