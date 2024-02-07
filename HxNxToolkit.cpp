@@ -1,5 +1,6 @@
 #include "HxNxToolkit.h"
 
+#include "App/SettingsWindow.h"
 #include "UI/Tab.h"
 #include "UI/ComponentFactory.h"
 #include "Util/Settings.h"
@@ -21,15 +22,11 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 {
 	ui.setupUi(this);
 	ComponentFactory::Register(this);
-	NewTab();
-
-	auto lastSaveDir = Settings::GetString(Option::LastSaveDir);
-	auto savePath = lastSaveDir.isEmpty() ? QApplication::applicationDirPath() + "/Workspace" : lastSaveDir;
-	QDir().mkdir(savePath);
-	Settings::Set(Option::LastSaveDir, savePath);
+	CreateDefaultSettings();
+	auto defaultTab = NewTab();
 
 	connect(&autosaveTimer, &QTimer::timeout, this, &HxNxToolkit::Autosave);
-	autosaveTimer.start(std::chrono::milliseconds{60'000});
+	autosaveTimer.start(std::chrono::milliseconds{Settings::GetInt(Option::AutosaveInterval) * 1'000});
 
 	trayMenu = new QMenu(this);
 	auto closeAction = new QAction("&Quit", this);
@@ -45,6 +42,11 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	connect(trayIcon, &QSystemTrayIcon::activated, this, &HxNxToolkit::IconActivated);
 
 	ui.ActionAlwaysOnTop->setChecked(Settings::GetBool(Option::AlwaysOnTop));
+
+	if (Settings::GetBool(Option::RestorePreviousSession)) {
+		auto path = Settings::GetString(Option::LastSavedTabPath);
+		LoadTab(defaultTab, path);
+	}
 }
 
 HxNxToolkit::~HxNxToolkit()
@@ -55,6 +57,8 @@ void HxNxToolkit::IconActivated(QSystemTrayIcon::ActivationReason reason)
 	bool visible = this->isVisible();
 	if (reason == QSystemTrayIcon::ActivationReason::DoubleClick) {
 		this->setVisible(!visible);
+		activateWindow();
+		show();
 	}
 }
 
@@ -110,7 +114,7 @@ void HxNxToolkit::NewTabTriggered()
 
 void HxNxToolkit::closeEvent(QCloseEvent* event)
 {
-	if (trayIcon->isVisible()) {
+	if (Settings::GetBool(Option::HideWhenClosed) && trayIcon->isVisible()) {
 		hide();
 		event->ignore();
 	}
@@ -120,7 +124,7 @@ void HxNxToolkit::changeEvent(QEvent* event)
 {
 	switch (event->type()) {
 	case QEvent::WindowStateChange:
-		if (isMinimized()) {
+		if (Settings::GetBool(Option::HideWhenMinimized) && isMinimized()) {
 			hide();
 		}
 		break;
@@ -213,6 +217,35 @@ void HxNxToolkit::AlwaysOnTopToggled(bool onTop)
 	Settings::Set(Option::AlwaysOnTop, onTop);
 }
 
+void HxNxToolkit::SettingsTriggered()
+{
+	auto settings = new SettingsWindow(this);
+	
+	auto flags = settings->windowFlags();
+	flags &= ~Qt::WindowMinimizeButtonHint;
+	flags &= ~Qt::WindowMaximizeButtonHint;
+	flags &= ~Qt::WindowCloseButtonHint;
+	settings->setWindowFlags(flags);
+
+	settings->setWindowModality(Qt::ApplicationModal);
+	settings->show();
+}
+
+void HxNxToolkit::CreateDefaultSettings()
+{
+	Settings::SetDefault(Option::AutosaveInterval, 60);
+	Settings::SetDefault(Option::AlwaysOnTop, false);
+	Settings::SetDefault(Option::HideWhenClosed, false);
+	Settings::SetDefault(Option::HideWhenMinimized, false);
+	Settings::SetDefault(Option::RestorePreviousSession, false);
+
+	// Default save path
+	auto lastSaveDir = Settings::GetString(Option::LastSaveDir);
+	auto savePath = lastSaveDir.isEmpty() ? QApplication::applicationDirPath() + "/Workspace" : lastSaveDir;
+	QDir().mkdir(savePath);
+	Settings::Set(Option::LastSaveDir, savePath);
+}
+
 bool HxNxToolkit::SaveTab(int idx)
 {
 	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
@@ -256,7 +289,8 @@ bool HxNxToolkit::SaveTab(int idx)
 	}
 
 	saveFile.write(doc.toJson());
-	Settings::Set(Option::LastSaveDir, savePath);
+	Settings::Set(Option::LastSaveDir, QFileInfo(savePath).absolutePath());
+	Settings::Set(Option::LastSavedTabPath, savePath);
 	saveFile.close();
 	return true;
 }
@@ -285,6 +319,11 @@ void HxNxToolkit::LoadTab()
 		return;
 	}
 
+	LoadTab(tab, tabPath);
+}
+
+void HxNxToolkit::LoadTab(Tab* tab, const QString& tabPath)
+{
 	QFile tabFile(tabPath);
 	if (!tabFile.open(QFile::ReadOnly)) {
 		return;
@@ -295,6 +334,7 @@ void HxNxToolkit::LoadTab()
 	ui.Tabs->setTabText(ui.Tabs->currentIndex(), tabObject["Title"].toString());
 	tab->LoadState(tabObject);
 	tab->SetSavePath(tabPath);
+	Settings::Set(Option::LastSavedTabPath, tabPath);
 }
 
 void HxNxToolkit::Quit()

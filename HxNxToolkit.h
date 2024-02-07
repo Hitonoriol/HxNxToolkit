@@ -49,11 +49,15 @@ public slots:
 private slots:
 	void IconActivated(QSystemTrayIcon::ActivationReason reason);
 	void AlwaysOnTopToggled(bool onTop);
+	void SettingsTriggered();
 
 private:
+	void CreateDefaultSettings();
+
 	bool SaveTab(int idx);
 	bool SaveTab();
 	void LoadTab();
+	void LoadTab(Tab* tab, const QString& tabPath);
 
 	void Quit();
 

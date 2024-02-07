@@ -74,6 +74,9 @@
     <ClCompile Include="UI\ComponentFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="App\SettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -115,6 +118,9 @@
     <QtMoc Include="Random\RandomString.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="App\SettingsWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -151,6 +157,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="Random\RandomString.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="App\SettingsWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
