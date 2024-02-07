@@ -1,7 +1,6 @@
 #include "Settings.h"
 
-const QString
-Settings::LastSaveDir = "LastSaveDir";
+#include <nameof/nameof.hpp>
 
 QSettings& Settings::Instance()
 {
@@ -9,12 +8,17 @@ QSettings& Settings::Instance()
 	return instance;
 }
 
-void Settings::SetString(const QString& key, const QString& value)
+void Settings::Set(Option key, const QVariant& value)
 {
-	Instance().setValue(key, value);
+	Instance().setValue(NAMEOF(key).c_str(), value);
 }
 
-QString Settings::GetString(const QString& key)
+QString Settings::GetString(Option key)
 {
-	return Instance().value(key, QString{}).toString();
+	return Instance().value(NAMEOF(key).c_str(), QString{}).toString();
+}
+
+bool Settings::GetBool(Option key)
+{
+	return Instance().value(NAMEOF(key).c_str(), false).toBool();
 }

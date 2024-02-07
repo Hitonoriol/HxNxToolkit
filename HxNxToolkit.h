@@ -48,6 +48,7 @@ public slots:
 
 private slots:
 	void IconActivated(QSystemTrayIcon::ActivationReason reason);
+	void AlwaysOnTopToggled(bool onTop);
 
 private:
 	bool SaveTab(int idx);

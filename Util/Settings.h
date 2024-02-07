@@ -1,14 +1,19 @@
 #pragma once
 #include <QSettings>
 
+enum class Option
+{
+	LastSaveDir,
+	AlwaysOnTop
+};
+
 class Settings
 {
 public:
-	static void SetString(const QString& key, const QString& value);
-	static QString GetString(const QString& key);
+	static void Set(Option key, const QVariant& value);
 
-	static const QString
-		LastSaveDir;
+	static QString GetString(Option key);
+	static bool GetBool(Option key);
 
 private:
 	static QSettings& Instance();

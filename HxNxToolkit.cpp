@@ -23,10 +23,10 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	ComponentFactory::Register(this);
 	NewTab();
 
-	auto lastSaveDir = Settings::GetString(Settings::LastSaveDir);
+	auto lastSaveDir = Settings::GetString(Option::LastSaveDir);
 	auto savePath = lastSaveDir.isEmpty() ? QApplication::applicationDirPath() + "/Workspace" : lastSaveDir;
 	QDir().mkdir(savePath);
-	Settings::SetString(Settings::LastSaveDir, savePath);
+	Settings::Set(Option::LastSaveDir, savePath);
 
 	connect(&autosaveTimer, &QTimer::timeout, this, &HxNxToolkit::Autosave);
 	autosaveTimer.start(std::chrono::milliseconds{60'000});
@@ -43,6 +43,8 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	trayIcon->show();
 	trayIcon->setContextMenu(trayMenu);
 	connect(trayIcon, &QSystemTrayIcon::activated, this, &HxNxToolkit::IconActivated);
+
+	ui.ActionAlwaysOnTop->setChecked(Settings::GetBool(Option::AlwaysOnTop));
 }
 
 HxNxToolkit::~HxNxToolkit()
@@ -196,6 +198,21 @@ void HxNxToolkit::CloseTabTriggered()
 	ui.Tabs->removeTab(ui.Tabs->currentIndex());
 }
 
+void HxNxToolkit::AlwaysOnTopToggled(bool onTop)
+{
+	auto flags = windowFlags();
+	if (onTop) {
+		flags |= Qt::WindowStaysOnTopHint;
+	} else {
+		flags &= ~Qt::WindowStaysOnTopHint;
+	}
+
+	setWindowFlags(flags);
+	show();
+
+	Settings::Set(Option::AlwaysOnTop, onTop);
+}
+
 bool HxNxToolkit::SaveTab(int idx)
 {
 	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
@@ -212,7 +229,7 @@ bool HxNxToolkit::SaveTab(int idx)
 		suggestedName.replace("--", "-");
 
 		QFileDialog dialog(this);
-		dialog.setDirectory({Settings::GetString(Settings::LastSaveDir)});
+		dialog.setDirectory({Settings::GetString(Option::LastSaveDir)});
 		dialog.selectFile(suggestedName);
 		dialog.setFileMode(QFileDialog::AnyFile);
 		dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
@@ -239,7 +256,7 @@ bool HxNxToolkit::SaveTab(int idx)
 	}
 
 	saveFile.write(doc.toJson());
-	Settings::SetString(Settings::LastSaveDir, savePath);
+	Settings::Set(Option::LastSaveDir, savePath);
 	saveFile.close();
 	return true;
 }
@@ -255,7 +272,7 @@ void HxNxToolkit::LoadTab()
 	auto tab = NewTab();
 
 	QFileDialog dialog(this);
-	dialog.setDirectory({Settings::GetString(Settings::LastSaveDir)});
+	dialog.setDirectory({Settings::GetString(Option::LastSaveDir)});
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter("HxNx Tab File (*.hxnx-tab)");
 	dialog.setAcceptMode(QFileDialog::AcceptOpen);

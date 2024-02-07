@@ -70,6 +70,8 @@
     <addaction name="ActionSaveTab"/>
     <addaction name="ActionLoadTab"/>
     <addaction name="separator"/>
+    <addaction name="ActionAlwaysOnTop"/>
+    <addaction name="separator"/>
     <addaction name="ActionQuit"/>
    </widget>
    <addaction name="MenuFile"/>
@@ -168,6 +170,14 @@
     <string>Ctrl+Shift+Q</string>
    </property>
   </action>
+  <action name="ActionAlwaysOnTop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Always on top</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -252,6 +262,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ActionAlwaysOnTop</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>HxNxToolkitClass</receiver>
+   <slot>AlwaysOnTopToggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>NewTabTriggered()</slot>
@@ -259,5 +285,6 @@
   <slot>LoadTabTriggered()</slot>
   <slot>OnTabClose(int)</slot>
   <slot>CloseTabTriggered()</slot>
+  <slot>AlwaysOnTopToggled(bool)</slot>
  </slots>
 </ui>
