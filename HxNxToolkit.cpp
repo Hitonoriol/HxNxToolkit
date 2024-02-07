@@ -57,8 +57,8 @@ void HxNxToolkit::IconActivated(QSystemTrayIcon::ActivationReason reason)
 	bool visible = this->isVisible();
 	if (reason == QSystemTrayIcon::ActivationReason::DoubleClick) {
 		this->setVisible(!visible);
+		setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
 		activateWindow();
-		show();
 	}
 }
 
