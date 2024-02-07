@@ -47,6 +47,7 @@ void TaskTracker::LoadState(const QJsonObject& state)
 		task->SetDescription(taskObj["Description"].toString());
 
 		bool finished = taskObj["Finished"].toBool();
+		task->SetFinished(finished);
 		task->GetEndButton()->setVisible(!finished);
 		task->GetEndField()->setReadOnly(!finished);
 	}
