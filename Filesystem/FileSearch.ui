@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FileSearchClass</class>
+ <widget class="QWidget" name="FileSearchClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FileSearch</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,3">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLineEdit" name="PathField">
+           <property name="placeholderText">
+            <string>Base directory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="BrowseButton">
+           <property name="text">
+            <string>Browse</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="SearchPatternField">
+         <property name="placeholderText">
+          <string>Filename pattern</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="SearchButton">
+         <property name="text">
+          <string>Search</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="StopButton">
+         <property name="text">
+          <string>Stop</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="ResultTitle">
+           <property name="text">
+            <string>Search results:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="WalkedFileslabel">
+           <property name="text">
+            <string>[walked 000 files]</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QListWidget" name="ResultList">
+         <property name="wordWrap">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>BrowseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FileSearchClass</receiver>
+   <slot>OnBrowsePress()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SearchButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FileSearchClass</receiver>
+   <slot>OnSearchPress()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>153</x>
+     <y>82</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ResultList</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>FileSearchClass</receiver>
+   <slot>OnSearchResultDoubleClicked(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>StopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FileSearchClass</receiver>
+   <slot>OnStopPress()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>124</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>OnBrowsePress()</slot>
+  <slot>OnSearchPress()</slot>
+  <slot>OnSearchResultDoubleClicked(QListWidgetItem*)</slot>
+  <slot>OnStopPress()</slot>
+ </slots>
+</ui>

@@ -18,5 +18,8 @@ enum class ToolType
 
 	// Random
 	RandomNumber,
-	RandomString
+	RandomString,
+
+	// Filesystem
+	FileSearch
 };

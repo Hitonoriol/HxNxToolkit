@@ -18,6 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\SettingsWindow.cpp" />
+    <ClCompile Include="Filesystem\FileSearch.cpp" />
     <ClCompile Include="UI\ComponentFactory.cpp" />
     <ClCompile Include="Random\RandomNumber.cpp" />
     <ClCompile Include="Random\RandomString.cpp" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="App\SettingsWindow.ui" />
+    <QtUic Include="Filesystem\FileSearch.ui" />
     <QtUic Include="General\BaseConverter.ui" />
     <QtUic Include="General\Calculator.ui" />
     <QtUic Include="HxNxToolkit.ui" />
@@ -84,6 +86,7 @@
     <QtMoc Include="Productivity\TaskTracker\TaskTracker.h" />
     <QtMoc Include="Productivity\TaskTracker\TaskTrackerEntry.h" />
     <QtMoc Include="App\SettingsWindow.h" />
+    <QtMoc Include="Filesystem\FileSearch.h" />
     <ClInclude Include="JSON\Serialization.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UI\ComponentFactory.h" />

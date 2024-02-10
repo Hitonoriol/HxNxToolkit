@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QJsonObject>
+#include <QJsonArray>
+
 #define HX_JOIN(...) __VA_ARGS__
 
 #define HX_STR_INTERNAL(s) #s

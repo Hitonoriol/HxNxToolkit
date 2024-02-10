@@ -77,6 +77,9 @@
     <ClCompile Include="App\SettingsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Filesystem\FileSearch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -121,6 +124,9 @@
     <QtMoc Include="App\SettingsWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Filesystem\FileSearch.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -160,6 +166,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="App\SettingsWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Filesystem\FileSearch.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

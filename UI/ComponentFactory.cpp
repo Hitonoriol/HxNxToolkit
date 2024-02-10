@@ -12,6 +12,8 @@
 #include "Random/RandomNumber.h"
 #include "Random/RandomString.h"
 
+#include "Filesystem/FileSearch.h"
+
 #include "UI/Tab.h"
 
 #include <QMessageBox>
@@ -54,7 +56,8 @@ std::map<ToolType, ComponentSupplierEntry> ComponentFactory::componentSuppliers{
 	}}},
 
 	{ToolType::RandomNumber, {"Random", "Random number", DefaultSupplier<RandomNumber>()}},
-	{ToolType::RandomString, {"Random", "Random string", DefaultSupplier<RandomString>()}}
+	{ToolType::RandomString, {"Random", "Random string", DefaultSupplier<RandomString>()}},
+	{ToolType::FileSearch, {"Filesystem", "File search", DefaultSupplier<FileSearch>()}}
 };
 
 void ComponentFactory::Register(HxNxToolkit* toolkit)
