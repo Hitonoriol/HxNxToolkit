@@ -9,6 +9,7 @@ TaskTracker::TaskTracker(QWidget *parent)
 	: Component(parent, ToolType::TaskTracker)
 {
 	ui.setupUi(this);
+	ui.DateField->setDate(QDateTime::currentDateTime().date());
 }
 
 TaskTracker::~TaskTracker()
@@ -28,6 +29,7 @@ QJsonObject TaskTracker::SaveState()
 		array.append(entryObj);
 	}
 	state["Tasks"] = array;
+	state["Date"] = ui.DateField->date().toString();
 	return state;
 }
 
@@ -51,6 +53,8 @@ void TaskTracker::LoadState(const QJsonObject& state)
 		task->GetEndButton()->setVisible(!finished);
 		task->GetEndField()->setReadOnly(!finished);
 	}
+
+	ui.DateField->setDate(QDate::fromString(state["Date"].toString()));
 }
 
 TaskTrackerEntry* TaskTracker::AddTaskEntry()
