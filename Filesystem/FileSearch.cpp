@@ -26,7 +26,11 @@ FileSearch::FileSearch(QWidget *parent)
 }
 
 FileSearch::~FileSearch()
-{}
+{
+	if (searchThread.joinable()) {
+		searchThread.join();
+	}
+}
 
 QJsonObject FileSearch::SaveState()
 {
@@ -97,9 +101,6 @@ void FileSearch::OnFileFound(std::filesystem::path foundPath)
 
 void FileSearch::OnContentsFound(std::filesystem::path foundPath, size_t line, QString context)
 {
-	static int a = 0;
-	OutputDebugStringA(("Preview(" + context.toStdString() + ")Preview\n").c_str());
-
 	auto newIdx = ui.ResultTable->rowCount();
 	ui.ResultTable->insertRow(newIdx);
 	ui.ResultTable->setItem(newIdx, 0, new QTableWidgetItem(QString::number(line)));
