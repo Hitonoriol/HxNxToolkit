@@ -165,6 +165,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
       <Command>"$(QtToolsPath)\windeployqt.exe" "$(OutDir)$(TargetFileName)" --no-translations --list target</Command>
@@ -176,6 +177,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
       <Command>"$(QtToolsPath)\windeployqt.exe" "$(OutDir)$(TargetFileName)" --no-translations --list target</Command>
