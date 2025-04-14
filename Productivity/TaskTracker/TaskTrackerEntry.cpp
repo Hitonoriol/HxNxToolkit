@@ -129,9 +129,10 @@ void TaskTrackerEntry::UpdateTime()
 			return;
 		}
 
-		auto start = QDateTime::fromString(startTimeStr, "hh:mm").toMSecsSinceEpoch();
-		auto end = QDateTime::fromString(endTimeStr, "hh:mm").toMSecsSinceEpoch();
-		UpdateTime(start, end, false);
+		auto start = QTime::fromString(startTimeStr, "hh:mm");
+		auto end = QTime::fromString(endTimeStr, "hh:mm");
+
+		UpdateTime(start.msecsSinceStartOfDay(), end.msecsSinceStartOfDay(), false);
 	}
 	catch (...) {
 		ui.DurationField->setText("");
