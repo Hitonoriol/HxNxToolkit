@@ -26,6 +26,12 @@ private slots:
 	void UpdateTimerTick();
 
 private:
+	void Start(bool updateState);
+	void Pause(bool updateState);
+
+	void AddTimePoint(const QString& time, const QString& diff);
+	void AddTimePoint(int64_t time, int64_t diff);
+
 	int64_t Elapsed();
 
 	Ui::StopwatchClass ui;
