@@ -2,6 +2,7 @@
 
 #include "General/BaseConverter.h"
 #include "General/Calculator.h"
+#include "General/MarkdownEditor.h"
 
 #include "Productivity/Checklist/Checklist.h"
 #include "Productivity/TaskTracker/TaskTracker.h"
@@ -21,6 +22,7 @@
 std::map<ToolType, ComponentSupplierEntry> ComponentFactory::componentSuppliers{
 	{ToolType::BaseConverter, {"General", "Base converter", DefaultSupplier<BaseConverter>()}},
 	{ToolType::Calculator, {"General", "Calculator", DefaultSupplier<Calculator>()}},
+	{ToolType::MarkdownEditor, {"General", "Markdown editor", DefaultSupplier<MarkdownEditor>()}},
 
 	{ToolType::Checklist, {"Productivity", "Checklist", DefaultSupplier<Checklist>()}},
 	{ToolType::TaskTracker, {"Productivity", "Task tracker", DefaultSupplier<TaskTracker>()}},

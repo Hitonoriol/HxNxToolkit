@@ -7,6 +7,7 @@ enum class ToolType
 	// General
 	BaseConverter,
 	Calculator,
+	MarkdownEditor,
 
 	// Productivity
 	Checklist,

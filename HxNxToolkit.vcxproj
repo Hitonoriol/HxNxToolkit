@@ -19,6 +19,7 @@
   <ItemGroup>
     <ClCompile Include="App\SettingsWindow.cpp" />
     <ClCompile Include="Filesystem\FileSearch.cpp" />
+    <ClCompile Include="General\MarkdownEditor.cpp" />
     <ClCompile Include="UI\ComponentFactory.cpp" />
     <ClCompile Include="Random\RandomNumber.cpp" />
     <ClCompile Include="Random\RandomString.cpp" />
@@ -45,6 +46,7 @@
     <QtUic Include="Filesystem\FileSearch.ui" />
     <QtUic Include="General\BaseConverter.ui" />
     <QtUic Include="General\Calculator.ui" />
+    <QtUic Include="General\MarkdownEditor.ui" />
     <QtUic Include="HxNxToolkit.ui" />
     <QtUic Include="Productivity\Checklist\Checklist.ui" />
     <QtUic Include="Productivity\Checklist\ChecklistEntry.ui" />
@@ -87,6 +89,30 @@
     <QtMoc Include="Productivity\TaskTracker\TaskTrackerEntry.h" />
     <QtMoc Include="App\SettingsWindow.h" />
     <QtMoc Include="Filesystem\FileSearch.h" />
+    <QtMoc Include="General\MarkdownEditor.h" />
+    <ClInclude Include="3rdParty\maddy\blockparser.h" />
+    <ClInclude Include="3rdParty\maddy\breaklineparser.h" />
+    <ClInclude Include="3rdParty\maddy\checklistparser.h" />
+    <ClInclude Include="3rdParty\maddy\codeblockparser.h" />
+    <ClInclude Include="3rdParty\maddy\emphasizedparser.h" />
+    <ClInclude Include="3rdParty\maddy\headlineparser.h" />
+    <ClInclude Include="3rdParty\maddy\horizontallineparser.h" />
+    <ClInclude Include="3rdParty\maddy\htmlparser.h" />
+    <ClInclude Include="3rdParty\maddy\imageparser.h" />
+    <ClInclude Include="3rdParty\maddy\inlinecodeparser.h" />
+    <ClInclude Include="3rdParty\maddy\italicparser.h" />
+    <ClInclude Include="3rdParty\maddy\latexblockparser.h" />
+    <ClInclude Include="3rdParty\maddy\lineparser.h" />
+    <ClInclude Include="3rdParty\maddy\linkparser.h" />
+    <ClInclude Include="3rdParty\maddy\orderedlistparser.h" />
+    <ClInclude Include="3rdParty\maddy\paragraphparser.h" />
+    <ClInclude Include="3rdParty\maddy\parser.h" />
+    <ClInclude Include="3rdParty\maddy\parserconfig.h" />
+    <ClInclude Include="3rdParty\maddy\quoteparser.h" />
+    <ClInclude Include="3rdParty\maddy\strikethroughparser.h" />
+    <ClInclude Include="3rdParty\maddy\strongparser.h" />
+    <ClInclude Include="3rdParty\maddy\tableparser.h" />
+    <ClInclude Include="3rdParty\maddy\unorderedlistparser.h" />
     <ClInclude Include="JSON\Serialization.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UI\ComponentFactory.h" />
@@ -127,13 +153,15 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;network;widgets;concurrent;multimedia;multimediawidgets;charts</QtModules>
+    <QtInstall>6.8.2_msvc2022_64</QtInstall>
+    <QtModules>core;gui;network;widgets;concurrent</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtDeployDebugRelease>false</QtDeployDebugRelease>
+    <QtDeployPdb>true</QtDeployPdb>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;network;widgets;concurrent;multimedia;multimediawidgets;charts</QtModules>
+    <QtInstall>6.8.2_msvc2022_64</QtInstall>
+    <QtModules>core;gui;network;widgets;concurrent</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -155,17 +183,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
   <PropertyGroup Label="QtDeploy" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtDeploy>false</QtDeploy>
+    <QtDeploy>true</QtDeploy>
     <QtDeployNoTranslations>true</QtDeployNoTranslations>
   </PropertyGroup>
   <PropertyGroup Label="QtDeploy" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtDeploy>false</QtDeploy>
+    <QtDeploy>true</QtDeploy>
     <QtDeployNoTranslations>true</QtDeployNoTranslations>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)3rdParty\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>UNICODE</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <PostBuildEvent>
       <Command>"$(QtToolsPath)\windeployqt.exe" "$(OutDir)$(TargetFileName)" --no-translations --list target</Command>
