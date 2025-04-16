@@ -1,4 +1,5 @@
 #include "Tab.h"
+#include "ComponentContainer.h"
 
 #include <QGroupBox>
 #include <QVBoxLayout>
@@ -33,18 +34,16 @@ QString Tab::GetSavePath() const
 void Tab::AddComponent(Component* component, const QString& title)
 {
 	auto scrollLayout = ui.Scroll->widget()->layout();
-
-	// TODO: Move this to a separate widget
-	auto group = new QGroupBox(title);
-	auto layout = new QVBoxLayout;
-	layout->addWidget(component);
-	group->setLayout(layout);
+	auto container = new ComponentContainer(component, this);
+	container->setTitle(title);
 
 	scrollLayout->removeItem(ui.BottomSpacer);
-	scrollLayout->addWidget(group);
+	scrollLayout->addWidget(container);
 	scrollLayout->addItem(ui.BottomSpacer);
 
 	connect(component, &Component::Modified, this, &Tab::ComponentModified);
+	connect(container, &ComponentContainer::CloseClicked, this, [container]() { container->deleteLater(); });
+
 	emit ComponentModified(nullptr);
 }
 
