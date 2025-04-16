@@ -113,7 +113,7 @@ void TaskTrackerEntry::UpdateTime(int64_t begin, int64_t end, bool updateEndFiel
 	}
 
 	if (updateEndField) {
-		ui.EndField->setText(QDateTime::fromMSecsSinceEpoch(end).toString("hh:mm"));
+		ui.EndField->setText(QTime::fromMSecsSinceStartOfDay(end).toString("hh:mm"));
 	}
 
 	ui.DurationField->setText(Time::GetTimeString(diff));
@@ -142,12 +142,12 @@ void TaskTrackerEntry::UpdateTime()
 
 void TaskTrackerEntry::OnEndButtonPress()
 {
-	auto time = QDateTime::fromString(ui.StartField->text(), "hh:mm");
-	auto startTime = time.toMSecsSinceEpoch();
-	auto endTime = Time::Now();
+	auto startTime = QTime::fromString(ui.StartField->text(), "hh:mm");
+	auto endTime = QTime::currentTime();
+	endTime.setHMS(endTime.hour(), endTime.minute(), 0); // Ignore seconds
 
 	finished = true;
-	UpdateTime(startTime, endTime);
+	UpdateTime(startTime.msecsSinceStartOfDay(), endTime.msecsSinceStartOfDay());
 	ui.EndButton->setVisible(false);
 	ui.EndField->setReadOnly(false);
 	emit EndButtonPressed();
