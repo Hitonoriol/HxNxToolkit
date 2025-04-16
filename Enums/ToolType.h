@@ -2,25 +2,25 @@
 
 enum class ToolType
 {
-	None,
+	None = 0,
 
 	// General
-	BaseConverter,
-	Calculator,
-	MarkdownEditor,
+	BaseConverter = 1,
+	Calculator = 2,
+	MarkdownEditor = 10,
 
 	// Productivity
-	Checklist,
-	TaskTracker,
+	Checklist = 3,
+	TaskTracker = 4,
 
 	// Time
-	Stopwatch,
-	Timer,
+	Stopwatch = 5,
+	Timer = 6,
 
 	// Random
-	RandomNumber,
-	RandomString,
+	RandomNumber = 7,
+	RandomString = 8,
 
 	// Filesystem
-	FileSearch
+	FileSearch = 9
 };
