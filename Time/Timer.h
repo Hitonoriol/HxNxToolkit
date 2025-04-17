@@ -29,6 +29,8 @@ private slots:
 	void OnUpdateTimerTick();
 
 private:
+	void Update(bool savedTimeOnly = false);
+
 	Ui::TimerClass ui;
 
 	Time duration;

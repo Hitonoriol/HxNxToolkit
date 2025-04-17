@@ -20,7 +20,13 @@ QJsonObject Timer::SaveState()
 		HX_SERIALIZE(ui.HourBox, value);
 	    HX_SERIALIZE(ui.MinuteBox, value);
 		HX_SERIALIZE(ui.SecondBox, value);
-	)
+	);
+
+	state["IsPaused"] = !updateTimer.isActive();
+	state["StartTime"] = startTime;
+	state["SavedTime"] = savedTime;
+	state["Duration"] = duration.GetTimeMs();
+
 	return state;
 }
 
@@ -30,7 +36,24 @@ void Timer::LoadState(const QJsonObject& state)
 		HX_DESERIALIZE(ui.HourBox, setValue, toInt);
 	    HX_DESERIALIZE(ui.MinuteBox, setValue, toInt);
 		HX_DESERIALIZE(ui.SecondBox, setValue, toInt);
-	)
+	);
+
+	bool paused = state["IsPaused"].toBool();
+	startTime = state["StartTime"].toInteger();
+	savedTime = state["SavedTime"].toInteger();
+	duration = Time(state["Duration"].toInteger());
+
+	if (startTime || savedTime) {
+		if (!paused) {
+			updateTimer.start(std::chrono::milliseconds{100});
+			ui.TimeEdit->setEnabled(false);
+			ui.StartPauseButton->setText("Pause");
+		}
+		else {
+			Update(true);
+			ui.StartPauseButton->setText("Resume");
+		}
+	}
 }
 
 void Timer::OnStartButtonPress()
@@ -74,9 +97,14 @@ void Timer::OnStopButtonPress()
 
 void Timer::OnUpdateTimerTick()
 {
-	auto now = Time::Now();
+	Update();
+}
+
+void Timer::Update(bool savedTimeOnly)
+{
+	auto elapsed = savedTimeOnly ? 0 : Time::Now() - startTime;
 	auto durationMs = duration.GetTimeMs();
-	auto remaining = qMax(0, durationMs - ((now - startTime) + savedTime));
+	auto remaining = qMax(0, durationMs - (elapsed + savedTime));
 	auto progress = (int)(100.0f - (((float)remaining / (float)durationMs) * 100.0f));
 
 	ui.TimeLabel->setText(Time::GetTimeString(remaining));
