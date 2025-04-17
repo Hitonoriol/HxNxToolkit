@@ -14,6 +14,9 @@ public:
 	MarkdownEditor(QWidget *parent = nullptr);
 	~MarkdownEditor();
 
+	virtual QJsonObject SaveState() override;
+	virtual void LoadState(const QJsonObject& state) override;
+
 private:
 	void onEditorTextChanged();
 

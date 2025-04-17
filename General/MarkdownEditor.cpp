@@ -14,6 +14,18 @@ MarkdownEditor::MarkdownEditor(QWidget *parent)
 MarkdownEditor::~MarkdownEditor()
 {}
 
+QJsonObject MarkdownEditor::SaveState()
+{
+	auto state = Component::SaveState();
+	state["Text"] = ui.EditorField->toPlainText();
+	return state;
+}
+
+void MarkdownEditor::LoadState(const QJsonObject& state)
+{
+	ui.EditorField->setPlainText(state["Text"].toString());
+}
+
 void MarkdownEditor::onEditorTextChanged()
 {
 	std::stringstream markdown(ui.EditorField->toPlainText().toStdString());
