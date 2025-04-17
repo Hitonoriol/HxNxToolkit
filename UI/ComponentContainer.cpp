@@ -5,7 +5,7 @@ ComponentContainer::ComponentContainer(Component* component, QWidget* parent)
 {
 	ui.setupUi(this);
 	component->setParent(this);
-	ui.Root->layout()->addWidget(component);
+	ui.Content->layout()->addWidget(component);
 
 	connect(ui.CloseBtn, &QPushButton::clicked, this, &ComponentContainer::CloseClicked);
 }

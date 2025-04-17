@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
@@ -26,7 +26,7 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item alignment="Qt::AlignHCenter">
+   <item alignment="Qt::AlignmentFlag::AlignHCenter">
     <widget class="QLabel" name="TimeLabel">
      <property name="text">
       <string>00:00:00</string>

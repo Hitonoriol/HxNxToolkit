@@ -71,13 +71,13 @@
           <number>5</number>
          </property>
          <property name="topMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="TitleLabel">
@@ -121,6 +121,24 @@
            </property>
           </widget>
          </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="Content" native="true">
+        <layout class="QVBoxLayout" name="ContentLayout">
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
+         </property>
+         <property name="rightMargin">
+          <number>10</number>
+         </property>
+         <property name="bottomMargin">
+          <number>10</number>
+         </property>
         </layout>
        </widget>
       </item>
