@@ -16,6 +16,8 @@
 #include <QByteArray>
 #include <QRegularExpression>
 #include <QCloseEvent>
+#include <QTabBar>
+#include <QInputDialog>
 
 HxNxToolkit::HxNxToolkit(QWidget *parent)
 	: QMainWindow(parent)
@@ -47,6 +49,9 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 		auto path = Settings::GetString(Option::LastSavedTabPath);
 		LoadTab(defaultTab, path);
 	}
+
+	ui.Tabs->tabBar()->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+	connect(ui.Tabs->tabBar(), &QWidget::customContextMenuRequested, this, &HxNxToolkit::TabContextMenuRequested);
 }
 
 HxNxToolkit::~HxNxToolkit()
@@ -231,6 +236,34 @@ void HxNxToolkit::SettingsTriggered()
 	settings->show();
 }
 
+void HxNxToolkit::TabContextMenuRequested(const QPoint& pos)
+{
+	auto tabBar = ui.Tabs->tabBar();
+	auto tabIdx = tabBar->tabAt(pos);
+	
+	if (tabIdx == -1) {
+		return;
+	}
+
+	QMenu menu;
+
+	connect(menu.addAction("Rename"), &QAction::triggered, this, [=] { TabRenameTriggered(tabIdx); });
+
+	menu.exec(tabBar->mapToGlobal(pos));
+}
+
+void HxNxToolkit::TabRenameTriggered(int tabIdx)
+{
+	auto tabBar = ui.Tabs->tabBar();
+
+	bool entered = false;
+	auto newTitle = QInputDialog::getText(this, "Rename tab", "Tab title:", QLineEdit::Normal, tabBar->tabText(tabIdx), &entered);
+
+	if (entered && !newTitle.isEmpty()) {
+		SetTabTitle(tabIdx, newTitle);
+	}
+}
+
 void HxNxToolkit::CreateDefaultSettings()
 {
 	Settings::SetDefault(Option::AutosaveInterval, 60);
@@ -248,17 +281,19 @@ void HxNxToolkit::CreateDefaultSettings()
 
 bool HxNxToolkit::SaveTab(int idx)
 {
-	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
-	auto tabJson = tab->SaveState();
-	auto title = ui.Tabs->tabText(idx);
-	tabJson["Title"] = title;
+	if (idx == -1) {
+		return false;
+	}
 
-	QJsonDocument doc(tabJson);
-	auto savePath = tab->GetSavePath();
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(idx));
+	auto title = GetTabTitle(idx);
+	
 	QFile saveFile;
+	auto savePath = tab->GetSavePath();
+	
 	if (savePath.isEmpty()) {
 		auto suggestedName = title;
-		suggestedName.replace(QRegularExpression("[^a-zA-Z0-9]"), "-");
+		suggestedName.replace(QRegularExpression("[^a-zA-Z0-9\\s]"), "-");
 		suggestedName.replace("--", "-");
 
 		QFileDialog dialog(this);
@@ -279,6 +314,9 @@ bool HxNxToolkit::SaveTab(int idx)
 		savePath = newPath;
 		saveFile.setFileName(newPath);
 		tab->SetSavePath(newPath);
+
+		auto tabName = std::filesystem::path(newPath.toStdString()).filename().replace_extension().u8string();
+		title = QString::fromStdString(tabName);
 	} else {
 		saveFile.setFileName(savePath);
 	}
@@ -288,7 +326,14 @@ bool HxNxToolkit::SaveTab(int idx)
 		return false;
 	}
 
-	saveFile.write(doc.toJson());
+	SetTabTitle(idx, title);
+
+	auto tabJson = tab->SaveState();
+	tabJson["Title"] = title;
+
+	ui.Tabs->setTabText(idx, title);
+
+	saveFile.write(QJsonDocument(tabJson).toJson());
 	Settings::Set(Option::LastSaveDir, QFileInfo(savePath).absolutePath());
 	Settings::Set(Option::LastSavedTabPath, savePath);
 	saveFile.close();
@@ -335,6 +380,29 @@ void HxNxToolkit::LoadTab(Tab* tab, const QString& tabPath)
 	tab->LoadState(tabObject);
 	tab->SetSavePath(tabPath);
 	Settings::Set(Option::LastSavedTabPath, tabPath);
+}
+
+void HxNxToolkit::SetTabTitle(int tabIdx, const QString& newTitle)
+{
+	if (ui.Tabs->tabText(tabIdx) == newTitle) {
+		return;
+	}
+
+	ui.Tabs->setTabText(tabIdx, newTitle);
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(tabIdx));
+	tab->Modify();
+}
+
+QString HxNxToolkit::GetTabTitle(int tabIdx)
+{
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(tabIdx));
+	auto title = ui.Tabs->tabText(tabIdx);
+
+	if (tab->IsModified()) {
+		title.removeLast();
+	}
+	
+	return title;
 }
 
 void HxNxToolkit::Quit()

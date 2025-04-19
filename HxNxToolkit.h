@@ -50,6 +50,8 @@ private slots:
 	void IconActivated(QSystemTrayIcon::ActivationReason reason);
 	void AlwaysOnTopToggled(bool onTop);
 	void SettingsTriggered();
+	void TabContextMenuRequested(const QPoint& pos);
+	void TabRenameTriggered(int tabIdx);
 
 private:
 	void CreateDefaultSettings();
@@ -58,6 +60,9 @@ private:
 	bool SaveTab();
 	void LoadTab();
 	void LoadTab(Tab* tab, const QString& tabPath);
+
+	void SetTabTitle(int tabIdx, const QString& newTitle);
+	QString GetTabTitle(int tabIdx);
 
 	void Quit();
 

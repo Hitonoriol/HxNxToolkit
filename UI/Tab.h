@@ -26,6 +26,9 @@ public:
 
 	bool IsModified();
 
+	// For external modifications only
+	void Modify();
+
 signals:
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
 

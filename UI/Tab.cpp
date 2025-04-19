@@ -81,3 +81,9 @@ bool Tab::IsModified()
 {
 	return modified;
 }
+
+void Tab::Modify()
+{
+	emit TabModified(this);
+	modified = true;
+}
