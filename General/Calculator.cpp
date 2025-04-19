@@ -24,6 +24,8 @@ QJsonObject Calculator::SaveState()
 
 void Calculator::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	HX_JSON_SCOPE(state,
 		HX_DESERIALIZE(ui.InputField, setText, toString);
 	    HX_DESERIALIZE(ui.OutputField, setText, toString);

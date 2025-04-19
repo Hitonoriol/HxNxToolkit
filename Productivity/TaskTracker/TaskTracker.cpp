@@ -35,6 +35,8 @@ QJsonObject TaskTracker::SaveState()
 
 void TaskTracker::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	auto entries = state["Tasks"].toArray();
 	if (!entries.isEmpty()) {
 		ui.StartButton->setVisible(false);

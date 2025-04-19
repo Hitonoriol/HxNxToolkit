@@ -40,6 +40,8 @@ QJsonObject RandomNumber::SaveState()
 
 void RandomNumber::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	HX_JSON_SCOPE(state,
 	    HX_DESERIALIZE(ui.MinIntBox, setValue, toInt);
 	    HX_DESERIALIZE(ui.MaxIntBox, setValue, toInt);

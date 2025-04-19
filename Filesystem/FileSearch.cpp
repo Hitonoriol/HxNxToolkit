@@ -52,6 +52,8 @@ QJsonObject FileSearch::SaveState()
 
 void FileSearch::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	HX_JSON_SCOPE(state,
 		HX_DESERIALIZE(ui.PathField, setText, toString);
 	    HX_DESERIALIZE(ui.SearchPatternField, setText, toString);

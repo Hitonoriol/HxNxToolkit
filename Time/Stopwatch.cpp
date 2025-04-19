@@ -50,6 +50,8 @@ QJsonObject Stopwatch::SaveState()
 
 void Stopwatch::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	auto hasState = state["HasState"].toBool();
 
 	if (!hasState) {

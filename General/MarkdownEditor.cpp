@@ -23,6 +23,8 @@ QJsonObject MarkdownEditor::SaveState()
 
 void MarkdownEditor::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	ui.EditorField->setPlainText(state["Text"].toString());
 }
 

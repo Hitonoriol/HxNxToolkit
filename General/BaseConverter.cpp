@@ -35,6 +35,8 @@ QJsonObject BaseConverter::SaveState()
 
 void BaseConverter::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	HX_JSON_SCOPE(state,
 		HX_DESERIALIZE(ui.InputBaseSelector, setCurrentIndex, toInt);
 	    HX_DESERIALIZE(ui.OutputBaseSelector, setCurrentIndex, toInt);

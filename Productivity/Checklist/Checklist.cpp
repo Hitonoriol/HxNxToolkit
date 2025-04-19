@@ -31,6 +31,8 @@ QJsonObject Checklist::SaveState()
 
 void Checklist::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	auto entries = state["Entries"].toArray();
 	for (auto entry : entries) {
 		auto entryObj = entry.toObject();

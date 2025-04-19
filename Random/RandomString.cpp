@@ -24,6 +24,8 @@ QJsonObject RandomString::SaveState()
 
 void RandomString::LoadState(const QJsonObject& state)
 {
+	Component::LoadState(state);
+
 	HX_JSON_SCOPE(state,
 		HX_DESERIALIZE(ui.CharacterSetField, setText, toString);
 	    HX_DESERIALIZE(ui.LengthBox, setValue, toInt);
