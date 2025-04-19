@@ -13,6 +13,11 @@ class Tab : public QWidget
 	Q_OBJECT
 
 public:
+	enum class ExpandMode {
+		MinSize,
+		Fill
+	};
+
 	Tab(QWidget* parent = nullptr);
 	~Tab();
 
@@ -29,6 +34,9 @@ public:
 	// For external modifications only
 	void Modify();
 
+	ExpandMode GetExpandMode();
+	void SetExpandMode(ExpandMode mode);
+
 signals:
 	void LoadComponent(ToolType componentType, const QJsonObject& state);
 
@@ -41,6 +49,7 @@ private slots:
 private:
 	Ui::TabClass ui;
 
+	ExpandMode expandMode = ExpandMode::MinSize;
 	QString savePath;
 	bool modified{};
 };

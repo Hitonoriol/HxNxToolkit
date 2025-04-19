@@ -52,6 +52,7 @@ private slots:
 	void SettingsTriggered();
 	void TabContextMenuRequested(const QPoint& pos);
 	void TabRenameTriggered(int tabIdx);
+	void TabExpandWidgetsTriggered(int tabIdx);
 
 private:
 	void CreateDefaultSettings();

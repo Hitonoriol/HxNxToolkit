@@ -87,3 +87,33 @@ void Tab::Modify()
 	emit TabModified(this);
 	modified = true;
 }
+
+Tab::ExpandMode Tab::GetExpandMode()
+{
+	return expandMode;
+}
+
+void Tab::SetExpandMode(ExpandMode mode)
+{
+	if (expandMode == mode) {
+		return;
+	}
+
+	auto scrollLayout = ui.Scroll->widget()->layout();
+
+	expandMode = mode;
+
+	switch (mode) {
+	case ExpandMode::MinSize:
+		scrollLayout->addItem(ui.BottomSpacer);
+		break;
+
+	case ExpandMode::Fill:
+		scrollLayout->removeItem(ui.BottomSpacer);
+		break;
+
+	default:
+		throw std::runtime_error("Unknown ExpandMode");
+		break;
+	}
+}

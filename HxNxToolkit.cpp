@@ -273,9 +273,12 @@ void HxNxToolkit::TabContextMenuRequested(const QPoint& pos)
 		return;
 	}
 
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(tabIdx));
+
 	QMenu menu;
 
 	connect(menu.addAction("Rename"), &QAction::triggered, this, [=] { TabRenameTriggered(tabIdx); });
+	connect(menu.addAction(tab->GetExpandMode() == Tab::ExpandMode::MinSize ? "Expand widgets" : "Shrink widgets"), &QAction::triggered, this, [=] { TabExpandWidgetsTriggered(tabIdx); });
 
 	menu.exec(tabBar->mapToGlobal(pos));
 }
@@ -290,6 +293,14 @@ void HxNxToolkit::TabRenameTriggered(int tabIdx)
 	if (entered && !newTitle.isEmpty()) {
 		SetTabTitle(tabIdx, newTitle);
 	}
+}
+
+void HxNxToolkit::TabExpandWidgetsTriggered(int tabIdx)
+{
+	auto tabBar = ui.Tabs->tabBar();
+	auto tab = dynamic_cast<Tab*>(ui.Tabs->widget(tabIdx));
+
+	tab->SetExpandMode(tab->GetExpandMode() == Tab::ExpandMode::MinSize ? Tab::ExpandMode::Fill : Tab::ExpandMode::MinSize);
 }
 
 void HxNxToolkit::CreateDefaultSettings()
@@ -358,6 +369,7 @@ bool HxNxToolkit::SaveTab(int idx)
 
 	auto tabJson = tab->SaveState();
 	tabJson["Title"] = title;
+	tabJson["ExpandMode"] = static_cast<int>(tab->GetExpandMode());
 
 	ui.Tabs->setTabText(idx, title);
 
@@ -407,6 +419,7 @@ void HxNxToolkit::LoadTab(Tab* tab, const QString& tabPath)
 	ui.Tabs->setTabText(ui.Tabs->currentIndex(), tabObject["Title"].toString());
 	tab->LoadState(tabObject);
 	tab->SetSavePath(tabPath);
+	tab->SetExpandMode(static_cast<Tab::ExpandMode>(tabObject["ExpandMode"].toInt()));
 	Settings::Set(Option::LastSavedTabPath, tabPath);
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>436</width>
-    <height>65</height>
+    <height>54</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,7 @@
 	border: 1px solid black;
 }</string>
      </property>
-     <layout class="QVBoxLayout" name="RootLayout">
+     <layout class="QVBoxLayout" name="RootLayout" stretch="0,1">
       <property name="spacing">
        <number>0</number>
       </property>
