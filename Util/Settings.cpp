@@ -1,11 +1,25 @@
 #include "Settings.h"
 
 #include <nameof/nameof.hpp>
+#include <QStandardPaths>
 
 QSettings& Settings::Instance()
 {
-	static QSettings instance("hxnxtk_config.ini", QSettings::IniFormat);
+	static auto configPath = GetPath() / "hxnxtk_config.ini";
+	static QSettings instance(configPath.u8string().data(), QSettings::IniFormat);
 	return instance;
+}
+
+std::filesystem::path Settings::GetPath()
+{
+	std::filesystem::path configDir(QStandardPaths::writableLocation(QStandardPaths::HomeLocation).toStdString());
+	configDir /= "HxNxToolkit";
+
+	if (!std::filesystem::exists(configDir)) {
+		std::filesystem::create_directories(configDir);
+	}
+
+	return configDir;
 }
 
 bool Settings::Contains(Option key)

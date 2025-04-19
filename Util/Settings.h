@@ -3,6 +3,7 @@
 #include <QSize>
 #include <QPoint>
 #include <QByteArray>
+#include <filesystem>
 
 enum class Option
 {
@@ -37,5 +38,6 @@ public:
 
 private:
 	static QSettings& Instance();
+	static std::filesystem::path GetPath();
 };
 
