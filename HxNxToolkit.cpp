@@ -45,13 +45,25 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 
 	ui.ActionAlwaysOnTop->setChecked(Settings::GetBool(Option::AlwaysOnTop));
 
+	ui.Tabs->tabBar()->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+	connect(ui.Tabs->tabBar(), &QWidget::customContextMenuRequested, this, &HxNxToolkit::TabContextMenuRequested);
+
 	if (Settings::GetBool(Option::RestorePreviousSession)) {
 		auto path = Settings::GetString(Option::LastSavedTabPath);
 		LoadTab(defaultTab, path);
 	}
 
-	ui.Tabs->tabBar()->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
-	connect(ui.Tabs->tabBar(), &QWidget::customContextMenuRequested, this, &HxNxToolkit::TabContextMenuRequested);
+	if (Settings::GetBool(Option::WindowMaximized)) {
+		showMaximized();
+	} else {
+		if (Settings::Contains(Option::WindowPos)) {
+			move(Settings::GetPoint(Option::WindowPos));
+		}
+
+		if (Settings::Contains(Option::WindowSize)) {
+			resize(Settings::GetSize(Option::WindowSize));
+		}
+	}
 }
 
 HxNxToolkit::~HxNxToolkit()
@@ -119,6 +131,10 @@ void HxNxToolkit::NewTabTriggered()
 
 void HxNxToolkit::closeEvent(QCloseEvent* event)
 {
+	Settings::Set(Option::WindowMaximized, isMaximized());
+	Settings::Set(Option::WindowPos, pos());
+	Settings::Set(Option::WindowSize, size());
+
 	if (Settings::GetBool(Option::HideWhenClosed) && trayIcon->isVisible()) {
 		hide();
 		event->ignore();

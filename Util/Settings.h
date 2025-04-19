@@ -1,5 +1,8 @@
 #pragma once
 #include <QSettings>
+#include <QSize>
+#include <QPoint>
+#include <QByteArray>
 
 enum class Option
 {
@@ -9,18 +12,28 @@ enum class Option
 	AutosaveInterval,
 	HideWhenMinimized,
 	HideWhenClosed,
-	RestorePreviousSession
+	RestorePreviousSession,
+
+	// Main window settings
+	WindowMaximized,
+	WindowPos,
+	WindowSize
 };
 
 class Settings
 {
 public:
+	static bool Contains(Option key);
+
 	static void Set(Option key, const QVariant& value);
 	static void SetDefault(Option key, const QVariant& value);
 
 	static QString GetString(Option key);
 	static int GetInt(Option key);
 	static bool GetBool(Option key);
+	static QSize GetSize(Option key);
+	static QPoint GetPoint(Option key);
+	static QByteArray GetByteArray(Option key);
 
 private:
 	static QSettings& Instance();

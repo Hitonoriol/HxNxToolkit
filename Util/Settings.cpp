@@ -8,6 +8,11 @@ QSettings& Settings::Instance()
 	return instance;
 }
 
+bool Settings::Contains(Option key)
+{
+	return Instance().contains(nameof::nameof_enum(key));
+}
+
 void Settings::Set(Option key, const QVariant& value)
 {
 	Instance().setValue(nameof::nameof_enum(key), value);
@@ -36,4 +41,18 @@ int Settings::GetInt(Option key)
 bool Settings::GetBool(Option key)
 {
 	return Instance().value(nameof::nameof_enum(key), false).toBool();
+}
+
+QSize Settings::GetSize(Option key) {
+	return Instance().value(nameof::nameof_enum(key), QSize{}).toSize();
+}
+
+QPoint Settings::GetPoint(Option key)
+{
+	return Instance().value(nameof::nameof_enum(key), QPoint{}).toPoint();
+}
+
+QByteArray Settings::GetByteArray(Option key)
+{
+	return Instance().value(nameof::nameof_enum(key), QByteArray{}).toByteArray();
 }
