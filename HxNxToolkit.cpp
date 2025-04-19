@@ -48,7 +48,19 @@ HxNxToolkit::HxNxToolkit(QWidget *parent)
 	ui.Tabs->tabBar()->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
 	connect(ui.Tabs->tabBar(), &QWidget::customContextMenuRequested, this, &HxNxToolkit::TabContextMenuRequested);
 
-	if (Settings::GetBool(Option::RestorePreviousSession)) {
+	auto launchArgs = QApplication::arguments();
+
+	if (launchArgs.size() > 1) {
+		try {
+			std::filesystem::path tabPath(launchArgs[1].toStdString());
+			LoadTab(defaultTab, QString::fromStdString(tabPath.u8string()));
+		}
+		catch (const std::exception& ex) {
+			QMessageBox errDialog(QMessageBox::Icon::Critical, "Error", "Failed to load tab.", QMessageBox::StandardButton::Ok, this);
+			errDialog.exec();
+		}
+	}
+	else if (Settings::GetBool(Option::RestorePreviousSession)) {
 		auto path = Settings::GetString(Option::LastSavedTabPath);
 		LoadTab(defaultTab, path);
 	}
