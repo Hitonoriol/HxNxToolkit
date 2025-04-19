@@ -23,6 +23,8 @@ public:
 
 signals:
 	void CloseClicked();
+	void UpClicked();
+	void DownClicked();
 
 private slots:
 	void OnTitleContextMenuRequested(const QPoint& pos);

@@ -45,6 +45,8 @@ signals:
 
 private slots:
 	void ComponentModified(Component* component);
+	void OnComponentClosed(ComponentContainer* component);
+	void OnComponentMoved(ComponentContainer* component, int direction);
 
 private:
 	Ui::TabClass ui;

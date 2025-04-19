@@ -33,7 +33,9 @@ QString Tab::GetSavePath() const
 
 void Tab::AddComponent(Component* component, const QString& title)
 {
-	auto scrollLayout = ui.Scroll->widget()->layout();
+	auto scrollLayout = dynamic_cast<QBoxLayout*>(ui.Scroll->widget()->layout());
+	assert(scrollLayout);
+
 	auto container = new ComponentContainer(component, this);
 	container->setTitle(title);
 
@@ -42,9 +44,36 @@ void Tab::AddComponent(Component* component, const QString& title)
 	scrollLayout->addItem(ui.BottomSpacer);
 
 	connect(component, &Component::Modified, this, &Tab::ComponentModified);
-	connect(container, &ComponentContainer::CloseClicked, this, [container]() { container->deleteLater(); });
+	connect(container, &ComponentContainer::CloseClicked, this, std::bind(&Tab::OnComponentClosed, this, container));
+	connect(container, &ComponentContainer::UpClicked, this, std::bind(&Tab::OnComponentMoved, this, container, -1));
+	connect(container, &ComponentContainer::DownClicked, this, std::bind(&Tab::OnComponentMoved, this, container, 1));
 
 	emit ComponentModified(nullptr);
+}
+
+void Tab::OnComponentClosed(ComponentContainer* container) {
+	container->deleteLater();
+	Modify();
+}
+
+void Tab::OnComponentMoved(ComponentContainer* container, int direction) {
+	auto scrollLayout = dynamic_cast<QBoxLayout*>(ui.Scroll->widget()->layout());
+	assert(scrollLayout);
+
+	auto prevIdx = scrollLayout->indexOf(container);
+	auto newIdx = prevIdx + direction;
+
+	if (newIdx < 0) {
+		return;
+	}
+
+	if (expandMode == ExpandMode::MinSize && newIdx >= scrollLayout->indexOf(ui.BottomSpacer)) {
+		return;
+	}
+
+	scrollLayout->insertWidget(newIdx, container);
+
+	Modify();
 }
 
 QJsonObject Tab::SaveState()

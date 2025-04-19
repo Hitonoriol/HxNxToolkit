@@ -13,6 +13,8 @@ ComponentContainer::ComponentContainer(Component* component, QWidget* parent)
 	ui.Title->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
 
 	connect(ui.CloseBtn, &QPushButton::clicked, this, &ComponentContainer::CloseClicked);
+	connect(ui.UpBtn, &QPushButton::clicked, this, &ComponentContainer::UpClicked);
+	connect(ui.DownBtn, &QPushButton::clicked, this, &ComponentContainer::DownClicked);
 	connect(ui.Title, &QWidget::customContextMenuRequested, this, &ComponentContainer::OnTitleContextMenuRequested);
 }
 
