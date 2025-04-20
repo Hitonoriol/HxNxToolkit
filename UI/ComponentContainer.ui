@@ -63,7 +63,10 @@
 	background-color: rgba(4, 4, 4, 0.05);
 }</string>
         </property>
-        <layout class="QHBoxLayout" name="ButtonLayout" stretch="0,0,0,0,0">
+        <layout class="QHBoxLayout" name="ButtonLayout" stretch="0,0,0,0,0,0">
+         <property name="spacing">
+          <number>2</number>
+         </property>
          <property name="sizeConstraint">
           <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
          </property>
@@ -135,6 +138,24 @@
            </property>
            <property name="text">
             <string></string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="CollapseBtn">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Segoe MDL2 Assets</family>
+            </font>
+           </property>
+           <property name="text">
+            <string></string>
            </property>
           </widget>
          </item>

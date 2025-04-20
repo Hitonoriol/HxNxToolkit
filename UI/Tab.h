@@ -49,6 +49,8 @@ private slots:
 	void OnComponentMoved(ComponentContainer* component, int direction);
 
 private:
+	void UpdateBottomSpacer();
+
 	Ui::TabClass ui;
 
 	ExpandMode expandMode = ExpandMode::MinSize;

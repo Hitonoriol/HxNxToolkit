@@ -15,6 +15,7 @@ ComponentContainer::ComponentContainer(Component* component, QWidget* parent)
 	connect(ui.CloseBtn, &QPushButton::clicked, this, &ComponentContainer::CloseClicked);
 	connect(ui.UpBtn, &QPushButton::clicked, this, &ComponentContainer::UpClicked);
 	connect(ui.DownBtn, &QPushButton::clicked, this, &ComponentContainer::DownClicked);
+	connect(ui.CollapseBtn, &QPushButton::clicked, this, &ComponentContainer::OnCollapseClicked);
 	connect(ui.Title, &QWidget::customContextMenuRequested, this, &ComponentContainer::OnTitleContextMenuRequested);
 }
 
@@ -44,6 +45,20 @@ void ComponentContainer::setTitle(const QString& title)
 QString ComponentContainer::getTitle()
 {
 	return ui.TitleLabel->text();
+}
+
+void ComponentContainer::OnCollapseClicked()
+{
+	if (ui.Content->isVisible()) {
+		ui.Content->hide();
+		ui.CollapseBtn->setText("\uE740");
+		emit CollapseClicked(true);
+	}
+	else {
+		ui.Content->show();
+		ui.CollapseBtn->setText("\uE73F");
+		emit CollapseClicked(false);
+	}
 }
 
 void ComponentContainer::OnTitleContextMenuRequested(const QPoint& pos)

@@ -25,10 +25,12 @@ signals:
 	void CloseClicked();
 	void UpClicked();
 	void DownClicked();
+	void CollapseClicked(bool collapse);
 
 private slots:
-	void OnTitleContextMenuRequested(const QPoint& pos);
+	void OnCollapseClicked();
 
+	void OnTitleContextMenuRequested(const QPoint& pos);
 	void OnRenameTriggered();
 
 private:

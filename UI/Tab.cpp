@@ -38,10 +38,11 @@ void Tab::AddComponent(Component* component, const QString& title)
 
 	auto container = new ComponentContainer(component, this);
 	container->setTitle(title);
-
-	scrollLayout->removeItem(ui.BottomSpacer);
 	scrollLayout->addWidget(container);
-	scrollLayout->addItem(ui.BottomSpacer);
+	
+	if (expandMode == ExpandMode::MinSize) {
+		UpdateBottomSpacer();
+	}
 
 	connect(component, &Component::Modified, this, &Tab::ComponentModified);
 	connect(container, &ComponentContainer::CloseClicked, this, std::bind(&Tab::OnComponentClosed, this, container));
@@ -74,6 +75,16 @@ void Tab::OnComponentMoved(ComponentContainer* container, int direction) {
 	scrollLayout->insertWidget(newIdx, container);
 
 	Modify();
+}
+
+void Tab::UpdateBottomSpacer()
+{
+	auto scrollLayout = dynamic_cast<QBoxLayout*>(ui.Scroll->widget()->layout());
+	assert(scrollLayout);
+
+	scrollLayout->removeItem(ui.BottomSpacer);
+	scrollLayout->addItem(ui.BottomSpacer);
+	scrollLayout->setStretch(scrollLayout->count() - 1, 1); // Stretch bottom spacer to take up as much space as possible
 }
 
 QJsonObject Tab::SaveState()
@@ -128,13 +139,14 @@ void Tab::SetExpandMode(ExpandMode mode)
 		return;
 	}
 
-	auto scrollLayout = ui.Scroll->widget()->layout();
+	auto scrollLayout = dynamic_cast<QBoxLayout*>(ui.Scroll->widget()->layout());
+	assert(scrollLayout);
 
 	expandMode = mode;
 
 	switch (mode) {
 	case ExpandMode::MinSize:
-		scrollLayout->addItem(ui.BottomSpacer);
+		UpdateBottomSpacer();
 		break;
 
 	case ExpandMode::Fill:
