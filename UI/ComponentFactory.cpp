@@ -15,6 +15,8 @@
 
 #include "Filesystem/FileSearch.h"
 
+#include "System/RamMonitor.h"
+
 #include "UI/Tab.h"
 
 #include <QMessageBox>
@@ -59,7 +61,8 @@ std::map<ToolType, ComponentSupplierEntry> ComponentFactory::componentSuppliers{
 
 	{ToolType::RandomNumber, {"Random", "Random number", DefaultSupplier<RandomNumber>()}},
 	{ToolType::RandomString, {"Random", "Random string", DefaultSupplier<RandomString>()}},
-	{ToolType::FileSearch, {"Filesystem", "File search", DefaultSupplier<FileSearch>()}}
+	{ToolType::FileSearch, {"Filesystem", "File search", DefaultSupplier<FileSearch>()}},
+	{ToolType::RamMonitor, {"System", "RAM Monitor", DefaultSupplier<RamMonitor>()}}
 };
 
 void ComponentFactory::Register(HxNxToolkit* toolkit)

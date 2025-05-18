@@ -22,5 +22,8 @@ enum class ToolType
 	RandomString = 8,
 
 	// Filesystem
-	FileSearch = 9
+	FileSearch = 9,
+
+	// System
+	RamMonitor = 11
 };

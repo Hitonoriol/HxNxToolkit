@@ -86,6 +86,9 @@
     <ClCompile Include="UI\ComponentContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="System\RamMonitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -139,6 +142,9 @@
     <QtMoc Include="UI\ComponentContainer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="System\RamMonitor.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -187,6 +193,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="UI\ComponentContainer.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="System\RamMonitor.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

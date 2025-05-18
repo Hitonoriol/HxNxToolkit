@@ -20,6 +20,7 @@
     <ClCompile Include="App\SettingsWindow.cpp" />
     <ClCompile Include="Filesystem\FileSearch.cpp" />
     <ClCompile Include="General\MarkdownEditor.cpp" />
+    <ClCompile Include="System\RamMonitor.cpp" />
     <ClCompile Include="UI\ComponentContainer.cpp" />
     <ClCompile Include="UI\ComponentFactory.cpp" />
     <ClCompile Include="Random\RandomNumber.cpp" />
@@ -55,6 +56,7 @@
     <QtUic Include="Productivity\TaskTracker\TaskTrackerEntry.ui" />
     <QtUic Include="Random\RandomNumber.ui" />
     <QtUic Include="Random\RandomString.ui" />
+    <QtUic Include="System\RamMonitor.ui" />
     <QtUic Include="Time\Stopwatch.ui" />
     <QtUic Include="Time\Timer.ui" />
     <QtUic Include="UI\ComponentContainer.ui" />
@@ -118,6 +120,7 @@
     <ClInclude Include="JSON\Serialization.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="UI\ComponentContainer.h" />
+    <QtMoc Include="System\RamMonitor.h" />
     <ClInclude Include="UI\ComponentFactory.h" />
     <ClInclude Include="Enums\ToolType.h" />
     <QtMoc Include="UI\Component.h" />
