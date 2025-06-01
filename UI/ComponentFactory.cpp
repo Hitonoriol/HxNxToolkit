@@ -16,6 +16,7 @@
 #include "Filesystem/FileSearch.h"
 
 #include "System/RamMonitor.h"
+#include "System/ClipboardHistory.h"
 
 #include "UI/Tab.h"
 
@@ -62,7 +63,8 @@ std::map<ToolType, ComponentSupplierEntry> ComponentFactory::componentSuppliers{
 	{ToolType::RandomNumber, {"Random", "Random number", DefaultSupplier<RandomNumber>()}},
 	{ToolType::RandomString, {"Random", "Random string", DefaultSupplier<RandomString>()}},
 	{ToolType::FileSearch, {"Filesystem", "File search", DefaultSupplier<FileSearch>()}},
-	{ToolType::RamMonitor, {"System", "RAM Monitor", DefaultSupplier<RamMonitor>()}}
+	{ToolType::RamMonitor, {"System", "RAM Monitor", DefaultSupplier<RamMonitor>()}},
+	{ToolType::ClipboardManager, {"System", "Clipboard History", DefaultSupplier<ClipboardHistory>()}}
 };
 
 void ComponentFactory::Register(HxNxToolkit* toolkit)

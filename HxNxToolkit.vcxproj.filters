@@ -89,6 +89,9 @@
     <ClCompile Include="System\RamMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="System\ClipboardHistory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HxNxToolkit.h">
@@ -145,6 +148,9 @@
     <QtMoc Include="System\RamMonitor.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="System\ClipboardHistory.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HxNxToolkit.ui">
@@ -196,6 +202,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="System\RamMonitor.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="System\ClipboardHistory.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -285,6 +294,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="3rdParty\maddy\unorderedlistparser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Qt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

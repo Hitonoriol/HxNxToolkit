@@ -25,5 +25,6 @@ enum class ToolType
 	FileSearch = 9,
 
 	// System
-	RamMonitor = 11
+	RamMonitor = 11,
+	ClipboardManager = 12
 };
