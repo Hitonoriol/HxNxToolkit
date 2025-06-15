@@ -40,10 +40,10 @@ QJsonObject ClipboardHistory::SaveState()
 
 		auto dataVar = item->data(Qt::UserRole);
 
-		if (dataVar.type() == QVariant::Type::String) {
+		if (HasText(item)) {
 			itemJson["Text"] = dataVar.value<QString>();
 		}
-		else if (dataVar.userType() == QMetaType::fromType<ImageItem>().id()) {
+		else if (HasImage(item)) {
 			auto imageItem = dataVar.value<ImageItem>();
 			itemJson["ImgURL"] = imageItem.url.toString();
 		}
@@ -94,6 +94,13 @@ void ClipboardHistory::OnClipboardChanged(QClipboard::Mode mode)
 
 	if (mime->hasText()) {
 		auto text = mime->text();
+
+		if (ui.ClipboardList->count() && HasText(ui.ClipboardList->item(0))) {
+			if (GetText(ui.ClipboardList->item(0)) == text) {
+				return;
+			}
+		}
+
 		auto textPreview = QString("[%1]\n%2").arg(dateTime.toString()).arg(text.size() < 50 ? text : (text.left(50) + "..."));
 		auto item = new QListWidgetItem(textPreview);
 		HxUtil::Qt::setUserObject(item, std::move(text));
@@ -101,6 +108,14 @@ void ClipboardHistory::OnClipboardChanged(QClipboard::Mode mode)
 	}
 	else if (mime->hasImage()) {
 		auto image = clipboard->pixmap();
+
+		if (ui.ClipboardList->count() && HasImage(ui.ClipboardList->item(0))) {
+			auto prevPixmap = GetImage(ui.ClipboardList->item(0));
+			if (prevPixmap.toImage() == image.toImage()) {
+				return;
+			}
+		}
+
 		auto imagePath = clipboardPath / (std::to_string(dateTime.toMSecsSinceEpoch()) + ".png");
 		auto saved = image.save(QString::fromStdString(imagePath.u8string()));
 
@@ -129,10 +144,10 @@ void ClipboardHistory::OnSelectedItemChanged(QListWidgetItem* current, QListWidg
 
 	auto dataVar = current->data(Qt::UserRole);
 
-	if (dataVar.type() == QVariant::Type::String) {
+	if (HasText(current)) {
 		ui.Preview->setText(dataVar.value<QString>());
 	}
-	else if (dataVar.userType() == QMetaType::fromType<ImageItem>().id()) {
+	else if (HasImage(current)) {
 		auto imageItem = dataVar.value<ImageItem>();
 		QPixmap pixmap;
 		auto loaded = pixmap.load(imageItem.url.toLocalFile());
@@ -163,11 +178,10 @@ void ClipboardHistory::OnItemDoubleClick(QListWidgetItem* item)
 	auto clipboard = QGuiApplication::clipboard();
 
 	auto dataVar = item->data(Qt::UserRole);
-
-	if (dataVar.type() == QVariant::Type::String) {
+	if (HasText(item)) {
 		clipboard->setText(dataVar.value<QString>());
 	}
-	else if (dataVar.userType() == QMetaType::fromType<ImageItem>().id()) {
+	else if (HasImage(item)) {
 		auto imageItem = dataVar.value<ImageItem>();
 		QPixmap pixmap;
 		auto loaded = pixmap.load(imageItem.url.toLocalFile());
@@ -190,7 +204,7 @@ void ClipboardHistory::OnClearHistoryClicked()
 		auto item = ui.ClipboardList->item(itemIdx);
 		auto dataVar = item->data(Qt::UserRole);
 
-		if (dataVar.userType() == QMetaType::fromType<ImageItem>().id()) {
+		if (HasImage(item)) {
 			auto imageItem = dataVar.value<ImageItem>();
 			std::filesystem::path imagePath(imageItem.url.toLocalFile().toStdString());
 			std::error_code ec;
@@ -199,4 +213,33 @@ void ClipboardHistory::OnClearHistoryClicked()
 	}
 
 	ui.ClipboardList->clear();
+}
+
+bool ClipboardHistory::HasText(QListWidgetItem* item)
+{
+	auto dataVar = item->data(Qt::UserRole);
+	return dataVar.type() == QVariant::Type::String;
+}
+
+bool ClipboardHistory::HasImage(QListWidgetItem* item)
+{
+	auto dataVar = item->data(Qt::UserRole);
+	return dataVar.userType() == QMetaType::fromType<ImageItem>().id();
+}
+
+QString ClipboardHistory::GetText(QListWidgetItem* item)
+{
+	auto dataVar = item->data(Qt::UserRole);
+	return dataVar.value<QString>();
+}
+
+QPixmap ClipboardHistory::GetImage(QListWidgetItem* item)
+{
+	auto dataVar = item->data(Qt::UserRole);
+	auto imageItem = dataVar.value<ImageItem>();
+
+	QPixmap pixmap;
+	pixmap.load(imageItem.url.toLocalFile());
+
+	return pixmap;
 }

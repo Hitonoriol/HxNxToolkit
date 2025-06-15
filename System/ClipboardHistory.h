@@ -33,6 +33,11 @@ private slots:
 	void OnClearHistoryClicked();
 
 private:
+	static bool HasText(QListWidgetItem* item);
+	static bool HasImage(QListWidgetItem* item);
+	static QString GetText(QListWidgetItem* item);
+	static QPixmap GetImage(QListWidgetItem* item);
+
 	Ui::ClipboardHistoryClass ui;
 	bool ignoreCopyEvent = false;
 
